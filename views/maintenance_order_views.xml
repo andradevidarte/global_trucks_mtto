@@ -352,6 +352,7 @@
                         </page>
 
                         <page string="Repuestos">
+                            <field name="include_spares_ldn"/>
                             <field name="parts_line_ids" nolabel="1">
                                 <list editable="bottom">
                                     <field name="state" string="Estado" widget="badge"
