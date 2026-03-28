@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Reporte GT (Renombrado) -->
+    <record id="action_report_maintenance_order" model="ir.actions.report">
+        <field name="name">Orden de Mantenimiento GT</field>
+        <field name="model">maintenance.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">global_trucks_mtto.report_maintenance_order</field>
+        <field name="report_file">global_trucks_mtto.report_maintenance_order</field>
+        <field name="binding_model_id" ref="model_maintenance_order"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">'OM-GT - %s' % (object.name)</field>
+        <field name="paperformat_id" ref="global_trucks_mtto.paperformat_maintenance_order"/>
+    </record>
+
+    <!-- Reporte LDN -->
+    <record id="action_report_maintenance_order_ldn" model="ir.actions.report">
+        <field name="name">Orden de Mantenimiento LDN</field>
+        <field name="model">maintenance.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">global_trucks_mtto.report_maintenance_order_ldn</field>
+        <field name="report_file">global_trucks_mtto.report_maintenance_order_ldn</field>
+        <field name="binding_model_id" ref="model_maintenance_order"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">'OM-LDN - %s' % (object.name)</field>
+        <field name="paperformat_id" ref="global_trucks_mtto.paperformat_maintenance_order"/>
+    </record>
+</odoo>
+
+
+cat /opt/odoo/odoo-server/addons/global_trucks_mtto/reports/maintenance_order_report_template.xml
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Template del Reporte GT con diseño optimizado -->
+    <template id="report_maintenance_order_document">
+        <t t-call="web.basic_layout">
+            <t t-foreach="docs" t-as="o">
+                <div class="page" style="padding-top: 0; margin-top: 0;">
+                    <!-- Encabezado Corporativo Global Trucks -->
+                    <div class="row" style="border: 2px solid #D4AF37; padding: 15px; border-radius: 5px; background-color: #D3D3D3; margin-top: 0; margin-bottom: 20px;">
+                        <div class="col-3 text-center" style="display: flex; align-items: center; justify-content: center;">
+                            <img src="/global_trucks_mtto/static/src/img/logo_gt.png"
+                                 style="max-width: 150px; max-height: 150px;"
+                                 alt="Global Trucks MC SAS"/>
+                        </div>
+                        <div class="col-9 text-center" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <h3 style="margin: 0; font-weight: bold; color: #000000; font-size: 21px;">Global Trucks MC SAS</h3>
+                            <p style="margin: 5px 0; font-size: 14px; color: #333333;">Carrera 4 # 29 Sur 07</p>
+                            <p style="margin: 5px 0; font-size: 14px; color: #333333;">📞 311 516 4735</p>
+                            <h4 style="margin: 15px 0 5px 0; font-weight: bold; color: #D4AF37; font-size: 18px;">Orden de Mantenimiento</h4>
+                            <h5 style="margin: 0; color: #000000; font-weight: bold; font-size: 17px;">
+                                <span t-field="o.name"/>
+                            </h5>
+                        </div>
+                    </div>
+
+                    <!-- Información General y del Vehículo -->
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <h4 style="color: #D4AF37; margin-bottom: 8px; font-size: 16px; font-weight: bold;">Información General</h4>
+                            <table class="table table-sm table-bordered" style="font-size: 14px;">
+                                <tr>
+                                    <td style="width: 50%; background-color: #F5F5F5;"><strong>Fecha de Solicitud:</strong></td>
+                                    <td><span t-field="o.date_request"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="background-color: #F5F5F5;"><strong>Fecha de Inicio:</strong></td>
+                                    <td><span t-field="o.date_start"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="background-color: #F5F5F5;"><strong>Fecha de Finalización:</strong></td>
+                                    <td><span t-field="o.date_end"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="background-color: #F5F5F5;"><strong>Cliente:</strong></td>
+                                    <td><span t-field="o.customer_id"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="background-color: #F5F5F5;"><strong>Operador/Conductor:</strong></td>
+                                    <td><span t-field="o.operator_name"/></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-6">
+                            <h4 style="color: #D4AF37; margin-bottom: 8px; font-size: 16px; font-weight: bold;">Información del Vehículo</h4>
+                            <table class="table table-sm table-bordered" style="font-size: 14px;">
+                                <tr>
+                                    <td style="width: 50%; background-color: #F5F5F5;"><strong>Vehículo:</strong></td>
+                                    <td><span t-field="o.vehicle_id"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="background-color: #F5F5F5;"><strong>Tipo:</strong></td>
+                                    <td><span t-field="o.vehicle_type"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="background-color: #F5F5F5;"><strong>Serie/Placa:</strong></td>
+                                    <td><span t-field="o.serie_plate"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="background-color: #F5F5F5;"><strong>KM / Horas:</strong></td>
+                                    <td><span t-field="o.km_hours"/></td>
+                                </tr>
+<!--                             <tr t-if="o.vehicle_model">
+                                    <td style="background-color: #F5F5F5;"><strong>Modelo:</strong></td>
+                                    <td><span t-field="o.vehicle_model"/></td>
+                                </tr>
+                                <tr t-if="o.vehicle_year">
+                                    <td style="background-color: #F5F5F5;"><strong>Año:</strong></td>
+                                    <td><span t-field="o.vehicle_year"/></td>
+                                </tr> -->
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Diagnósticos con Trabajos e Imágenes -->
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <h4 style="color: #D4AF37; margin-bottom: 12px; font-size: 16px; font-weight: bold;">Diagnósticos y Trabajos Realizados</h4>
+
+                            <t t-if="not o.diagnosis_ids">
+                                <p class="text-muted" style="font-size: 14px;">No hay diagnósticos registrados.</p>
+                            </t>
+
+                            <t t-foreach="o.diagnosis_ids" t-as="diagnosis">
+                                <div class="diagnosis-section" style="margin-bottom: 20px;">
+                                    <!-- Título del Diagnóstico -->
+                                    <div style="background-color: #D3D3D3; border-left: 4px solid #D4AF37; padding: 8px; margin-bottom: 10px;">
+                                        <h5 style="margin: 0; color: #000000; font-weight: bold; font-size: 15px;">
+                                            Diagnóstico #<t t-esc="diagnosis_index + 1"/>:
+                                            <span t-field="diagnosis.name"/>
+                                        </h5>
+                                    </div>
+
+                                    <!-- Trabajos Realizados -->
+                                    <t t-if="diagnosis.followup_ids">
+                                        <h6 style="margin-bottom: 6px; color: #D4AF37; font-size: 14px; font-weight: bold;">Trabajos Realizados:</h6>
+                                        <ul style="list-style-type: disc; margin-left: 20px; line-height: 1.6; margin-bottom: 12px; font-size: 14px;">
+                                            <t t-foreach="diagnosis.followup_ids" t-as="followup">
+                                                <li style="margin-bottom: 4px;">
+                                                    <span t-field="followup.name"/>
+                                                </li>
+                                            </t>
+                                        </ul>
+                                    </t>
+                                    <t t-else="">
+                                        <p class="text-muted" style="margin-left: 15px; margin-bottom: 12px; font-size: 14px;">Sin trabajos registrados</p>
+                                    </t>
+
+                                    <!-- Imágenes de este Diagnóstico (con mejor control de saltos) -->
+                                    <t t-if="diagnosis.image_ids">
+                                        <h6 style="margin-bottom: 10px; color: #D4AF37; font-size: 14px; font-weight: bold;">Registro Fotográfico:</h6>
+
+                                        <!-- Contador de imágenes para controlar saltos de página -->
+                                        <t t-set="total_images" t-value="len(diagnosis.image_ids)"/>
+                                        <t t-set="images_displayed" t-value="0"/>
+
+                                        <!-- Procesar imágenes en bloques de 6 (2 filas x 3 columnas) -->
+                                        <t t-while="images_displayed &lt; total_images">
+                                            <!-- Bloque de máximo 6 imágenes que no se puede dividir -->
+                                            <div style="page-break-inside: avoid;">
+                                                <div class="row" style="margin-bottom: 6px;">
+                                                    <t t-set="block_end" t-value="min(images_displayed + 6, total_images)"/>
+                                                    <t t-foreach="diagnosis.image_ids[images_displayed:block_end]" t-as="image">
+                                                        <div class="col-4" style="padding: 3px; margin-bottom: 6px;">
+                                                            <t t-if="image.datas">
+                                                                <div style="width: 100%; height: 200px; border: 1.5px solid #D4AF37; overflow: hidden; background-color: #ffffff; display: flex; align-items: center; justify-content: center;">
+                                                                    <img t-att-src="image_data_uri(image.datas)"
+                                                                         style="width: 100%; height: 100%; object-fit: cover;"
+                                                                         t-att-alt="'Imagen'"/>
+                                                                </div>
+                                                            </t>
+                                                        </div>
+                                                    </t>
+                                                </div>
+                                            </div>
+                                            <t t-set="images_displayed" t-value="block_end"/>
+                                        </t>
+                                    </t>
+
+                                    <!-- Separador entre diagnósticos -->
+                                    <t t-if="not diagnosis_last">
+                                        <hr style="margin: 18px 0; border-top: 1px dashed #D4AF37;"/>
+                                    </t>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+
+                    <!-- Observaciones -->
+                    <t t-if="o.observations">
+                        <div class="row mb-3" style="page-break-inside: avoid;">
+                            <div class="col-12">
+                                <h4 style="color: #D4AF37; margin-bottom: 8px; font-size: 16px; font-weight: bold;">Observaciones</h4>
+                                <p style="white-space: pre-line; padding: 8px; border: 1px solid #D4AF37; background-color: #FAFAFA; font-size: 14px;"><span t-field="o.observations"/></p>
+                            </div>
+                        </div>
+                    </t>
+
+                    <!-- Firmas -->
+                    <div class="row mt-4" style="page-break-inside: avoid;">
+                        <div class="col-6 text-center">
+                            <h5 style="color: #D4AF37; margin-bottom: 12px; font-size: 15px; font-weight: bold;">Encargado del Mantenimiento</h5>
+
+                            <t t-if="o.maintenance_signature">
+                                <img t-att-src="image_data_uri(o.maintenance_signature)"
+                                     style="max-width: 250px; max-height: 100px; border: 1.5px solid #D4AF37; padding: 5px; margin: 15px 0; background-color: #ffffff;"/>
+                            </t>
+                            <t t-else="">
+                                <div style="height: 100px; border: 1.5px dashed #D4AF37; margin: 15px 0; display: flex; align-items: center; justify-content: center; background-color: #F5F5F5;">
+                                    <span style="color: #999; font-size: 14px;">Sin firma</span>
+                                </div>
+                            </t>
+
+                            <div style="border-top: 2px solid #000000; display: inline-block; min-width: 250px; margin-top: 10px; padding-top: 10px;">
+                                <p style="margin: 5px 0; font-size: 14px;"><strong><span t-field="o.maintenance_responsible_id"/></strong></p>
+                                <p style="margin: 0; color: #666; font-size: 13px;">
+                                    <span t-field="o.maintenance_responsible_job"/>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-6 text-center">
+                            <h5 style="color: #D4AF37; margin-bottom: 12px; font-size: 15px; font-weight: bold;">Representante del Cliente</h5>
+
+                            <t t-if="o.customer_signature">
+                                <img t-att-src="image_data_uri(o.customer_signature)"
+                                     style="max-width: 250px; max-height: 100px; border: 1.5px solid #D4AF37; padding: 5px; margin: 15px 0; background-color: #ffffff;"/>
+                            </t>
+                            <t t-else="">
+                                <div style="height: 100px; border: 1.5px dashed #D4AF37; margin: 15px 0; display: flex; align-items: center; justify-content: center; background-color: #F5F5F5;">
+                                    <span style="color: #999; font-size: 14px;">Sin firma</span>
+                                </div>
+                            </t>
+
+                            <div style="border-top: 2px solid #000000; display: inline-block; min-width: 250px; margin-top: 10px; padding-top: 10px;">
+                                <p style="margin: 5px 0; font-size: 14px;"><strong><span t-field="o.customer_representative_name"/></strong></p>
+                                <p style="margin: 0; color: #666; font-size: 13px;">
+                                    <span t-field="o.customer_representative_job"/>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- Reporte Principal GT -->
+    <template id="report_maintenance_order">
+        <t t-call="web.html_container">
+            <t t-call="global_trucks_mtto.report_maintenance_order_document"/>
+        </t>
+    </template>
+</odoo>

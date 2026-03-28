@@ -1,0 +1,58 @@
+<odoo>
+    <record id="view_mtto_order_new_wizard_form" model="ir.ui.view">
+        <field name="name">maintenance.order.new.wizard.form</field>
+        <field name="model">maintenance.order.new.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Nueva orden" create="false" edit="false">
+                <sheet>
+                    <group>
+                        <field name="vehicle_id" options="{'no_create': False, 'no_open': False}"/>
+                        <field name="customer_id"/>
+                    </group>
+                    <footer>
+                        <button name="action_continue" type="object"
+                                string="Continuar" class="btn btn-primary"/>
+                        <button string="Cancelar" special="cancel" class="btn btn-secondary"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_mtto_order_new_wizard" model="ir.actions.act_window">
+        <field name="name">Nueva orden</field>
+        <field name="res_model">maintenance.order.new.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_mtto_order_new_wizard_form"/>
+        <field name="target">new</field>
+    </record>
+
+    <record id="view_mtto_order_confirm_duplicate_form" model="ir.ui.view">
+        <field name="name">maintenance.order.confirm.duplicate.form</field>
+        <field name="model">maintenance.order.confirm.duplicate</field>
+        <field name="arch" type="xml">
+            <form string="Confirmación" create="false" edit="false">
+                <sheet>
+                    <group>
+                        <field name="vehicle_id"/>
+                        <field name="existing_order_id"/>
+                        <field name="message" nolabel="1" readonly="1"/>
+                    </group>
+                    <footer>
+                        <button name="action_continue" type="object"
+                                string="Crear nueva orden" class="btn btn-primary"/>
+                        <button string="Cancelar" special="cancel" class="btn btn-secondary"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_mtto_order_confirm_duplicate" model="ir.actions.act_window">
+        <field name="name">Confirmación</field>
+        <field name="res_model">maintenance.order.confirm.duplicate</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_mtto_order_confirm_duplicate_form"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

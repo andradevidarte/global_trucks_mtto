@@ -1,0 +1,13 @@
+<odoo>
+    <data noupdate="1">
+        <!-- Definimos la secuencia para los consecutivos de las órdenes de mantenimiento -->
+        <record id="seq_maintenance_order" model="ir.sequence">
+            <field name="name">Consecutivo de Órdenes de Mantenimiento</field>
+            <field name="code">maintenance.order</field>
+            <field name="padding">4</field> <!-- Esto asegura 4 ceros (por ejemplo: OM0001) -->
+            <field name="prefix">OM</field> <!-- Prefijo -->
+            <field name="number_next">1</field> <!-- Número inicial -->
+            <field name="number_increment">1</field> <!-- Incremento de 1 en 1 -->
+        </record>
+    </data>
+</odoo>

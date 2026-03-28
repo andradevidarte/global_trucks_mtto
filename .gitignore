@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+
+# Odoo
+*.po~
+*.pot~
+*.log
+*.db
+*.sqlite3
+*.bak
+*.swp
+*~
+*.orig
+*.rej
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

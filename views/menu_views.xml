@@ -1,0 +1,38 @@
+<odoo>
+    <!-- Menú principal -->
+    <menuitem id="menu_global_trucks_root"
+              name="Global Trucks MC SAS"
+              sequence="1"
+              groups="global_trucks_mtto.group_mtto_admin,global_trucks_mtto.group_mtto_supervisor,global_trucks_mtto.group_mtto_maintenance,global_trucks_mtto.group_mtto_sales"/>
+
+    <!-- Submenú: Órdenes de Mantenimiento -->
+    <menuitem id="menu_maintenance_orders"
+              name="Órdenes de Mantenimiento"
+              parent="menu_global_trucks_root"
+              action="action_maintenance_order"
+              sequence="10"
+              groups="global_trucks_mtto.group_mtto_admin,global_trucks_mtto.group_mtto_supervisor,global_trucks_mtto.group_mtto_maintenance,global_trucks_mtto.group_mtto_sales"/>
+
+    <!-- NUEVO: Submenú "Nueva orden" (abre el wizard de selección de vehículo) -->
+    <menuitem id="menu_maintenance_order_new"
+              name="Nueva orden"
+              parent="menu_maintenance_orders"
+              action="action_mtto_order_new_wizard"
+              sequence="5"
+              groups="global_trucks_mtto.group_mtto_admin,global_trucks_mtto.group_mtto_supervisor,global_trucks_mtto.group_mtto_maintenance,global_trucks_mtto.group_mtto_sales"/>
+
+    <!-- Menú de Configuración -->
+    <menuitem id="menu_configuration"
+              name="Configuración"
+              parent="menu_global_trucks_root"
+              sequence="100"
+              groups="global_trucks_mtto.group_mtto_admin,global_trucks_mtto.group_mtto_supervisor"/>
+
+    <!-- Submenú: Vehículos -->
+    <menuitem id="menu_vehicles"
+              name="Vehículos"
+              parent="menu_configuration"
+              action="action_maintenance_vehicle"
+              sequence="10"
+              groups="global_trucks_mtto.group_mtto_admin,global_trucks_mtto.group_mtto_supervisor"/>
+</odoo>

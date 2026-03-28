@@ -1,0 +1,273 @@
+/* ============================================
+   MODAL/POPUP DE FIRMA - ESTILOS MEJORADOS
+   ============================================ */
+
+/* Modal de firma en general */
+.modal.o_web_sign_name_and_signature_modal,
+.modal.o_technical_modal.o_web_sign_name_and_signature_modal,
+.o_web_sign_name_and_signature_modal .modal-dialog {
+    max-width: 95vw !important;
+}
+
+.o_web_sign_name_and_signature_modal .modal-body {
+    padding: 20px !important;
+}
+
+/* Canvas dentro del modal - SIN altura fija (la maneja JavaScript) */
+.modal .o_web_sign_signature canvas,
+.o_web_sign_name_and_signature_modal canvas,
+.modal-body .o_web_sign_signature canvas,
+div.o_web_sign_signature canvas {
+    border: 2px solid #D4AF37 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    background-color: #ffffff !important;
+    cursor: crosshair !important;
+    touch-action: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    display: block !important;
+    margin: 0 auto !important;
+    /* NO especificar height, min-height, max-height - lo maneja JavaScript */
+}
+
+/* Contenedor del canvas en el modal */
+.o_web_sign_signature,
+.modal .o_web_sign_signature {
+    width: 100% !important;
+    padding: 10px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-direction: column !important;
+}
+
+/* ============================================
+   MODAL EN TABLETS
+   ============================================ */
+
+@media (max-width: 992px) {
+    .o_web_sign_name_and_signature_modal .modal-dialog {
+        max-width: 98vw !important;
+    }
+}
+
+/* ============================================
+   MODAL EN MÓVILES - PORTRAIT (VERTICAL)
+   ============================================ */
+
+@media (max-width: 768px) and (orientation: portrait) {
+    /* Modal a pantalla completa en móviles */
+    .o_web_sign_name_and_signature_modal .modal-dialog {
+        max-width: 100vw !important;
+        margin: 0 !important;
+        height: 100vh !important;
+    }
+
+    .o_web_sign_name_and_signature_modal .modal-content {
+        height: 100vh !important;
+        border-radius: 0 !important;
+    }
+
+    .o_web_sign_name_and_signature_modal .modal-body {
+        padding: 15px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        height: calc(100vh - 140px) !important;
+    }
+
+    .o_web_sign_signature {
+        flex: 1 !important;
+    }
+
+    /* Botones del modal más grandes */
+    .o_web_sign_name_and_signature_modal .modal-footer button,
+    .o_web_sign_name_and_signature_modal button.btn {
+        padding: 14px 24px !important;
+        font-size: 16px !important;
+        min-height: 50px !important;
+        width: 100% !important;
+        margin: 5px 0 !important;
+    }
+
+    .o_web_sign_name_and_signature_modal .modal-footer {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 10px !important;
+        padding: 15px !important;
+    }
+
+    /* Título del modal */
+    .o_web_sign_name_and_signature_modal .modal-header {
+        padding: 15px !important;
+    }
+
+    .o_web_sign_name_and_signature_modal .modal-title {
+        font-size: 18px !important;
+        font-weight: bold !important;
+    }
+}
+
+/* ============================================
+   MODAL EN MÓVILES - LANDSCAPE (HORIZONTAL)
+   ============================================ */
+
+@media (max-width: 768px) and (orientation: landscape) {
+    /* Modal adaptado a landscape */
+    .o_web_sign_name_and_signature_modal .modal-dialog {
+        max-width: 100vw !important;
+        margin: 0 !important;
+    }
+
+    .o_web_sign_name_and_signature_modal .modal-content {
+        border-radius: 0 !important;
+        height: 100vh !important;
+    }
+
+    .o_web_sign_name_and_signature_modal .modal-body {
+        padding: 10px !important;
+        height: calc(100vh - 120px) !important;
+    }
+
+    /* Botones horizontales en landscape */
+    .o_web_sign_name_and_signature_modal .modal-footer {
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        padding: 10px !important;
+    }
+
+    .o_web_sign_name_and_signature_modal .modal-footer button {
+        width: auto !important;
+        padding: 10px 20px !important;
+        min-height: 44px !important;
+        flex: 1 !important;
+        margin: 0 5px !important;
+    }
+}
+
+/* ============================================
+   TABLETS EN LANDSCAPE
+   ============================================ */
+
+@media (min-width: 769px) and (max-width: 992px) and (orientation: landscape) {
+    .o_web_sign_name_and_signature_modal .modal-dialog {
+        max-width: 95vw !important;
+    }
+}
+
+/* ============================================
+   BOTONES DEL MODAL MEJORADOS
+   ============================================ */
+
+/* Botón "Adoptar y Firmar" / "Guardar" */
+.o_web_sign_name_and_signature_modal .btn-primary,
+.o_web_sign_name_and_signature_modal button[name="portal_sign"] {
+    background: linear-gradient(135deg, #D4AF37 0%, #B8941F 100%) !important;
+    color: white !important;
+    border: none !important;
+    font-weight: 600 !important;
+}
+
+.o_web_sign_name_and_signature_modal .btn-primary:hover {
+    background: linear-gradient(135deg, #B8941F 0%, #D4AF37 100%) !important;
+    transform: scale(1.02) !important;
+}
+
+/* Botón "Limpiar" */
+.o_web_sign_name_and_signature_modal .btn-secondary,
+.o_web_sign_name_and_signature_modal button.o_web_sign_clear_button {
+    background: linear-gradient(135deg, #6c757d 0%, #545b62 100%) !important;
+    color: white !important;
+    border: none !important;
+}
+
+/* Botón cerrar (X) */
+.o_web_sign_name_and_signature_modal .btn-close,
+.o_web_sign_name_and_signature_modal button[data-bs-dismiss="modal"] {
+    font-size: 24px !important;
+    padding: 10px !important;
+}
+
+/* ============================================
+   PREVENIR PROBLEMAS DE SCROLL Y ZOOM
+   ============================================ */
+
+.modal .o_web_sign_signature canvas,
+.o_web_sign_name_and_signature_modal canvas {
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+    -webkit-touch-callout: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+    touch-action: none !important;
+}
+
+/* Prevenir scroll del body cuando el modal está abierto */
+body.modal-open {
+    overflow: hidden !important;
+}
+
+/* ============================================
+   MENSAJE DE AYUDA EN EL MODAL
+   ============================================ */
+
+.o_web_sign_signature::before {
+    content: 'Firme aquí con el dedo o stylus' !important;
+    display: block !important;
+    text-align: center !important;
+    color: #999 !important;
+    font-size: 16px !important;
+    font-style: italic !important;
+    margin-bottom: 10px !important;
+    padding: 10px !important;
+}
+
+@media (max-width: 768px) {
+    .o_web_sign_signature::before {
+        font-size: 18px !important;
+        font-weight: 500 !important;
+        color: #666 !important;
+    }
+}
+
+/* ============================================
+   ANIMACIONES SUAVES EN EL MODAL
+   ============================================ */
+
+.modal .o_web_sign_signature canvas {
+    transition: border-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+.modal .o_web_sign_signature canvas:active {
+    border-color: #B8941F !important;
+    box-shadow: 0 4px 16px rgba(212, 175, 55, 0.4) !important;
+}
+
+/* ============================================
+   ESTILOS ADICIONALES PARA CAMPOS DE FIRMA
+   ============================================ */
+
+/* Mejorar campos de texto relacionados */
+.o_field_widget[name="maintenance_responsible_job"],
+.o_field_widget[name="customer_representative_job"],
+.o_field_widget[name="customer_representative_name"] {
+    font-weight: 500 !important;
+    color: #333 !important;
+}
+
+/* Input con placeholder mejorado */
+.o_field_widget[name="customer_representative_name"] input::placeholder {
+    color: #999 !important;
+    font-style: italic !important;
+}
+
+/* Títulos de secciones de firmas */
+.o_form_view .o_horizontal_separator {
+    color: #333 !important;
+    font-weight: bold !important;
+    font-size: 16px !important;
+    margin: 15px 0 10px 0 !important;
+    padding-bottom: 5px !important;
+    border-bottom: 2px solid #D4AF37 !important;
+}

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista list simple para historial de mantenimientos (en vehículo) -->
+    <record id="view_maintenance_order_list_vehicle_history" model="ir.ui.view">
+        <field name="name">maintenance.order.list.vehicle.history</field>
+        <field name="model">maintenance.order</field>
+        <field name="arch" type="xml">
+            <list string="Historial de Mantenimientos" create="false" edit="false">
+                <field name="name"/>
+                <field name="date_request"/>
+                <field name="customer_id"/>
+                <field name="is_completed" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista de formulario del vehículo -->
+    <record id="view_maintenance_vehicle_form" model="ir.ui.view">
+        <field name="name">maintenance.vehicle.form</field>
+        <field name="model">maintenance.vehicle</field>
+        <field name="arch" type="xml">
+            <form string="Vehículo">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Nombre del vehículo" required="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Información Básica">
+                            <field name="category" required="1"/>
+                            <field name="vehicle_type" required="1"/>
+                            <field name="serie_plate" required="1"/>
+                            <field name="model"/>
+                            <field name="year"/>
+                        </group>
+                        <group string="Detalles Adicionales">
+                            <field name="color"/>
+                            <field name="owner_id" required="1"/>
+                            <field name="maintenance_count"/>
+                        </group>
+                    </group>
+
+                    <!-- Historial de mantenimientos -->
+                    <notebook>
+                        <page string="Historial de Mantenimientos">
+                            <field name="maintenance_order_ids"
+                                   readonly="1"
+                                   mode="list"
+                                   context="{'list_view_ref': 'global_trucks_mtto.view_maintenance_order_list_vehicle_history'}"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista de lista principal -->
+    <record id="view_maintenance_vehicle_list" model="ir.ui.view">
+        <field name="name">maintenance.vehicle.list</field>
+        <field name="model">maintenance.vehicle</field>
+        <field name="arch" type="xml">
+            <list string="Vehículos">
+                <field name="name"/>
+                <field name="category"/>
+                <field name="vehicle_type"/>
+                <field name="serie_plate"/>
+                <field name="model"/>
+                <field name="year"/>
+                <field name="owner_id"/>
+                <field name="maintenance_count"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista de búsqueda -->
+    <record id="view_maintenance_vehicle_search" model="ir.ui.view">
+        <field name="name">maintenance.vehicle.search</field>
+        <field name="model">maintenance.vehicle</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Vehículos">
+                <field name="name"/>
+                <field name="category"/>
+                <field name="vehicle_type"/>
+                <field name="serie_plate"/>
+                <field name="owner_id"/>
+
+                <filter string="Vehicular" name="category_vehicular" domain="[('category','=','vehicular')]"/>
+                <filter string="Maquinaria" name="category_machinery" domain="[('category','=','machinery')]"/>
+
+                <separator/>
+
+                <filter string="Por Tipo" name="group_by_type" context="{'group_by': 'vehicle_type'}"/>
+                <filter string="Por Propietario" name="group_by_owner" context="{'group_by': 'owner_id'}"/>
+                <filter string="Por Categoría" name="group_by_category" context="{'group_by': 'category'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Acción de ventana -->
+    <record id="action_maintenance_vehicle" model="ir.actions.act_window">
+        <field name="name">Vehículos</field>
+        <field name="res_model">maintenance.vehicle</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crear un nuevo vehículo
+            </p>
+            <p>
+                Registra los vehículos de tu flota para realizar seguimiento de sus mantenimientos.
+            </p>
+        </field>
+    </record>
+</odoo>

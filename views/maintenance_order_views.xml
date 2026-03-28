@@ -1,0 +1,458 @@
+<odoo>
+    <!-- Acción vinculada -->
+    <record id="action_maintenance_order" model="ir.actions.act_window">
+        <field name="name">Órdenes de Mantenimiento</field>
+        <field name="res_model">maintenance.order</field>
+        <field name="view_mode">kanban,list,form</field>
+
+        <field name="context">
+            {
+              'search_default_not_invoiced': 1
+            }
+        </field>
+
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                ¡Crea tu primera Orden de Mantenimiento!
+            </p>
+            <p>
+                Registra las órdenes de mantenimiento de tus vehículos aquí.
+            </p>
+        </field>
+    </record>
+
+    <!-- Vista Kanban para Móviles -->
+    <record id="view_maintenance_order_kanban" model="ir.ui.view">
+        <field name="name">maintenance.order.kanban</field>
+        <field name="model">maintenance.order</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile o_maintenance_kanban"
+                    default_order="is_completed asc, id desc"
+                    create="1">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="customer_id"/>
+                <field name="vehicle_type"/>
+                <field name="serie_plate"/>
+                <field name="km_hours"/>
+                <field name="operator_name"/>
+                <field name="date_request"/>
+                <field name="date_start"/>
+                <field name="is_completed"/>
+                <field name="is_invoiced"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_maintenance_order_card">
+                            <div class="o_kanban_card_header">
+                                <div class="o_kanban_card_header_title">
+                                    <strong><field name="customer_id"/></strong>
+                                </div>
+                            </div>
+
+                            <div class="o_kanban_card_content">
+                                <div class="o_maintenance_order_info">
+                                    <span class="o_maintenance_order_number">
+                                        <field name="name"/>
+                                    </span>
+                                    <span class="o_maintenance_order_date">
+                                        <i class="fa fa-clock-o"/> <field name="date_request" widget="date"/>
+                                        <t t-if="record.date_start.raw_value">
+                                            <field name="date_start" widget="datetime"/>
+                                        </t>
+                                    </span>
+                                </div>
+
+                                <div class="o_maintenance_vehicle_info">
+                                    <div class="o_vehicle_type">
+                                        <i class="fa fa-truck"/> <field name="vehicle_type"/>
+                                    </div>
+                                    <div class="o_vehicle_plate">
+                                        <strong>Serie/Placa:</strong> <field name="serie_plate"/>
+                                    </div>
+
+                                    <t t-if="record.km_hours.raw_value">
+                                        <div class="o_vehicle_plate">
+                                            <strong>KM / Horas:</strong> <field name="km_hours"/>
+                                        </div>
+                                    </t>
+
+                                    <t t-if="record.operator_name.raw_value">
+                                        <div class="o_vehicle_operator">
+                                            <i class="fa fa-user"/> <field name="operator_name"/>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+
+                            <div class="o_kanban_card_footer">
+                                <div class="o_kanban_card_footer_left">
+                                    <t t-if="record.is_invoiced.raw_value">
+                                        <span class="badge badge-success">
+                                            <i class="fa fa-file-text-o"/> Facturada
+                                        </span>
+                                    </t>
+                                    <t t-else="">
+                                        <span class="badge badge-warning">
+                                            <i class="fa fa-file-o"/> No facturada
+                                        </span>
+                                    </t>
+                                </div>
+                                <div class="o_kanban_card_footer_right">
+                                    <t t-if="record.is_completed.raw_value">
+                                        <span class="badge badge-secondary">
+                                            <i class="fa fa-check"/> Completada
+                                        </span>
+                                    </t>
+                                    <t t-else="">
+                                        <span class="badge badge-secondary">
+                                            <i class="fa fa-clock-o"/> Pendiente
+                                        </span>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Vista list -->
+    <record id="view_maintenance_order_list" model="ir.ui.view">
+        <field name="name">maintenance.order.list</field>
+        <field name="model">maintenance.order</field>
+        <field name="arch" type="xml">
+            <list string="Órdenes de Mantenimiento" create="1" edit="1" delete="1">
+                <header>
+                    <button name="%(global_trucks_mtto.action_mtto_order_new_wizard)d"
+                            type="action"
+                            string="Nueva orden"
+                            class="btn btn-primary"/>
+                </header>
+
+                <field name="name" string="Orden"/>
+                <field name="date_request" string="Fecha Solicitud"/>
+                <field name="serie_plate" string="Serie / Placa"/>
+                <field name="vehicle_type" string="Tipo Vehículo"/>
+                <field name="km_hours" string="KM / Horas"/>
+                <field name="customer_short" string="Cliente"/>
+                <field name="operator_name" string="Operador"/>
+
+                <!-- Badge para facturación: verde / naranja -->
+                <field name="invoice_state_badge"
+                       string="Facturada"
+                       widget="badge"
+                       decoration-success="invoice_state_badge == 'invoiced'"
+                       decoration-warning="invoice_state_badge == 'not_invoiced'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Search -->
+    <record id="view_maintenance_order_search" model="ir.ui.view">
+        <field name="name">maintenance.order.search</field>
+        <field name="model">maintenance.order</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Orden"/>
+                <field name="vehicle_type" string="Tipo Vehículo"/>
+                <field name="serie_plate" string="Serie/Placa"/>
+                <field name="customer_id" string="Cliente"/>
+
+                <filter string="No facturadas" name="not_invoiced"
+                        domain="[('is_invoiced', '=', False)]"/>
+                <filter string="Facturadas" name="invoiced"
+                        domain="[('is_invoiced', '=', True)]"/>
+
+                <separator/>
+
+                <filter string="Finalizadas" name="completed"
+                        domain="[('is_completed', '=', True)]"/>
+                <filter string="Pendientes" name="pending"
+                        domain="[('is_completed', '=', False)]"/>
+
+                <separator/>
+
+                <filter string="Vehicular" name="vehicle_category_vehicular"
+                        domain="[('vehicle_id.category','=','vehicular')]"/>
+                <filter string="Maquinaria" name="vehicle_category_machinery"
+                        domain="[('vehicle_id.category','=','machinery')]"/>
+
+                <group expand="0" string="Agrupar Por">
+                    <filter string="Tipo de Vehículo" name="group_vehicle_type"
+                            context="{'group_by': 'vehicle_type'}"/>
+                    <filter string="Cliente" name="group_customer"
+                            context="{'group_by': 'customer_id'}"/>
+                    <filter string="Estado" name="group_state"
+                            context="{'group_by': 'is_completed'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Form -->
+    <record id="view_maintenance_order_form" model="ir.ui.view">
+        <field name="name">maintenance.order.form</field>
+        <field name="model">maintenance.order</field>
+        <field name="arch" type="xml">
+            <form string="Orden de Mantenimiento">
+                <header>
+                    <field name="is_completed" widget="boolean_toggle" readonly="1"/>
+                </header>
+
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Información General">
+                            <field name="date_start"/>
+                            <field name="date_end"/>
+                            <field name="customer_id"/>
+                            <field name="operator_name" placeholder="Nombre en MAYÚSCULAS"/>
+                            <field name="is_invoiced"/>
+                        </group>
+
+                        <group string="Información del Vehículo">
+                            <field name="vehicle_id"
+                                   domain="[('owner_id', '=', customer_id)]"
+                                   context="{'default_owner_id': customer_id}"
+                                   options="{'no_create': False, 'no_open': False}"/>
+                            <field name="vehicle_type" readonly="1"/>
+                            <field name="serie_plate" readonly="1"/>
+                            <field name="km_hours" placeholder="Ej: 125000 KM o 320 H"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Diagnósticos de Fallas">
+                            <field name="diagnosis_ids" mode="kanban">
+                                <kanban class="o_kanban_mobile" create="1" edit="1" delete="1">
+                                    <field name="id"/>
+                                    <field name="name"/>
+                                    <field name="is_completed"/>
+                                    <field name="attachment_count"/>
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <div t-attf-class="oe_kanban_card oe_kanban_global_click {{ record.is_completed.raw_value ? 'border-success' : 'border-warning' }}"
+                                                 style="border-left: 4px solid; padding: 10px;">
+                                                <div class="oe_kanban_content">
+                                                    <div class="oe_kanban_details">
+                                                        <strong class="o_kanban_record_title">
+                                                            <field name="name"/>
+                                                        </strong>
+                                                        <div class="o_kanban_record_bottom"
+                                                             style="margin-top: 10px; display: flex; justify-content: space-between;">
+                                                            <div class="oe_kanban_bottom_left">
+                                                                <span class="badge badge-secondary" title="Adjuntos">
+                                                                    📎 <t t-esc="record.attachment_count.value"/>
+                                                                </span>
+                                                            </div>
+                                                            <div class="oe_kanban_bottom_right">
+                                                                <t t-if="record.is_completed.raw_value">
+                                                                    <span class="badge badge-success">✓ Completado</span>
+                                                                </t>
+                                                                <t t-else="">
+                                                                    <span class="badge badge-warning">⏱ Pendiente</span>
+                                                                </t>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+
+                                <form string="Diagnóstico de Falla">
+                                    <header>
+                                        <label for="is_completed" string="Estado:" class="oe_edit_only"/>
+                                        <field name="is_completed"
+                                               widget="boolean_button"
+                                               options="{'terminology': {'true': 'Completado', 'false': 'Pendiente'}}"/>
+                                    </header>
+                                    <sheet>
+                                        <group string="DESCRIPCIÓN DE LA FALLA" class="o_diagnosis_section_header">
+                                            <field name="name"
+                                                   nolabel="1"
+                                                   placeholder="Describa la falla detectada..."
+                                                   widget="text"
+                                                   options="{'collaborative': false}"/>
+                                        </group>
+
+                                        <group string="ACTIVIDADES REALIZADAS" class="o_diagnosis_section_header mt32">
+                                            <field name="followup_ids" nolabel="1" colspan="2">
+                                                <list editable="bottom">
+                                                    <field name="name" string="Descripción del Trabajo o Actividad"/>
+                                                </list>
+                                            </field>
+                                        </group>
+
+                                        <group string="IMÁGENES ADJUNTAS" class="o_diagnosis_section_header mt32" colspan="2">
+                                            <field name="image_ids"
+                                                   widget="many2many_binary"
+                                                   string="📷 Subir Imágenes"
+                                                   nolabel="1"
+                                                   colspan="2"
+                                                   options="{'accepted_file_extensions': 'image/*'}"/>
+
+                                            <field name="image_ids"
+                                                   nolabel="1"
+                                                   colspan="2"
+                                                   widget="many2many"
+                                                   mode="kanban"
+                                                   class="o_diagnosis_image_gallery"
+                                                   context="{'default_res_model': 'maintenance.diagnosis'}">
+                                                <kanban create="false" delete="true" class="o_diagnosis_kanban_grid">
+                                                    <field name="id"/>
+                                                    <field name="name"/>
+                                                    <field name="mimetype"/>
+                                                    <templates>
+                                                        <t t-name="kanban-box">
+                                                            <div class="o_attachment_kanban_box">
+                                                                <div class="o_attachment_image_container">
+                                                                    <t t-if="record.mimetype.raw_value and record.mimetype.raw_value.indexOf('image') === 0">
+                                                                        <img t-att-src="'/web/image/' + record.id.raw_value"
+                                                                             class="o_attachment_thumbnail"
+                                                                             t-att-alt="record.name.raw_value"/>
+                                                                        <div class="o_attachment_overlay">
+                                                                            <i class="fa fa-search-plus"/>
+                                                                        </div>
+                                                                    </t>
+                                                                    <t t-else="">
+                                                                        <i class="fa fa-file-o fa-3x text-muted"/>
+                                                                    </t>
+                                                                </div>
+                                                                <div class="o_attachment_actions">
+                                                                    <a type="delete" class="btn btn-sm btn-danger">
+                                                                        <i class="fa fa-trash"/>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </t>
+                                                    </templates>
+                                                </kanban>
+                                            </field>
+                                        </group>
+                                    </sheet>
+                                </form>
+                            </field>
+
+                            <div class="o_row" style="margin-top: 10px;">
+                                <button name="action_download_diagnosis_collages_zip"
+                                        type="object"
+                                        string="Descargar collages (ZIP)"
+                                        class="btn btn-primary"
+                                        icon="fa-download"/>
+                            </div>
+                        </page>
+
+                        <page string="Repuestos">
+                            <field name="parts_line_ids" nolabel="1">
+                                <list editable="bottom">
+                                    <field name="state" string="Estado" widget="badge"
+                                           decoration-muted="state == 'draft'"
+                                           decoration-warning="state == 'requested'"
+                                           decoration-success="state == 'delivered'"/>
+                                    <field name="product_name" string="Repuesto"/>
+                                    <field name="qty_requested" string="Cant. Solicitada"/>
+                                    <field name="qty_delivered" string="Cant. Entregada"/>
+                                    <field name="notes" string="Notas"/>
+
+                                    <button name="action_request" type="object" string="Solicitar"
+                                            class="btn btn-secondary"
+                                            data-autosave="1"
+                                            groups="global_trucks_mtto.group_mtto_admin,global_trucks_mtto.group_mtto_supervisor,global_trucks_mtto.group_mtto_maintenance"
+                                            attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+
+                                    <button name="action_deliver" type="object" string="Entregar"
+                                            class="btn btn-primary"
+                                            data-autosave="1"
+                                            groups="global_trucks_mtto.group_mtto_admin,global_trucks_mtto.group_mtto_supervisor,global_trucks_mtto.group_mtto_sales"
+                                            attrs="{'invisible': [('state', '=', 'delivered')]}"/>
+                                </list>
+                            </field>
+
+                            <group string="IMÁGENES ADJUNTAS" class="o_diagnosis_section_header mt32" colspan="2">
+                                <field name="parts_image_ids"
+                                       widget="many2many_binary"
+                                       string="Imágenes Adjuntas"
+                                       nolabel="1"
+                                       colspan="2"
+                                       options="{'accepted_file_extensions': 'image/*'}"/>
+
+                                <field name="parts_image_ids"
+                                       nolabel="1"
+                                       colspan="2"
+                                       widget="many2many"
+                                       mode="kanban"
+                                       class="o_diagnosis_image_gallery">
+                                    <kanban create="false" delete="true" class="o_diagnosis_kanban_grid">
+                                        <field name="id"/>
+                                        <field name="name"/>
+                                        <field name="mimetype"/>
+                                        <templates>
+                                            <t t-name="kanban-box">
+                                                <div class="o_attachment_kanban_box">
+                                                    <div class="o_attachment_image_container">
+                                                        <t t-if="record.mimetype.raw_value and record.mimetype.raw_value.indexOf('image') === 0">
+                                                            <img t-att-src="'/web/image/' + record.id.raw_value"
+                                                                 class="o_attachment_thumbnail"
+                                                                 t-att-alt="record.name.raw_value"/>
+                                                            <div class="o_attachment_overlay">
+                                                                <i class="fa fa-search-plus"/>
+                                                            </div>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <i class="fa fa-file-o fa-3x text-muted"/>
+                                                        </t>
+                                                    </div>
+                                                    <div class="o_attachment_actions">
+                                                        <a type="delete" class="btn btn-sm btn-danger">
+                                                            <i class="fa fa-trash"/>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                        </templates>
+                                    </kanban>
+                                </field>
+                            </group>
+                        </page>
+
+                        <page string="Firmas">
+                            <group>
+                                <group string="Encargado del Mantenimiento">
+                                    <field name="maintenance_responsible_id"
+                                           options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="maintenance_responsible_job"
+                                           placeholder="Cargo no especificado"
+                                           readonly="1"/>
+                                    <field name="maintenance_signature" widget="signature"
+                                           placeholder="Haga clic aquí para firmar"/>
+                                </group>
+
+                                <group string="Representante del Cliente">
+                                    <field name="customer_representative_name" placeholder="Se sincroniza con el operador"/>
+                                    <field name="customer_representative_job"/>
+                                    <field name="customer_signature" widget="signature"
+                                           placeholder="Haga clic aquí para firmar"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="Observaciones">
+                            <field name="observations" placeholder="Observaciones adicionales..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+
+                <chatter/>
+            </form>
+        </field>
+    </record>
+</odoo>

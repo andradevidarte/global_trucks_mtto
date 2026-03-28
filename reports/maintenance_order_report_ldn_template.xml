@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Template del Reporte LDN con Encabezado Personalizado -->
+    <template id="report_maintenance_order_ldn_document">
+        <t t-call="web.basic_layout">
+            <t t-foreach="docs" t-as="o">
+                <div class="page">
+                    <!-- Encabezado Personalizado con Logo y Datos de Empresa (SIN estado) -->
+                    <div class="row mb-4" style="border-bottom: 3px solid #875a7b; padding-bottom: 15px;">
+                        <div class="col-3 text-center" style="display: flex; align-items: center; justify-content: center;">
+                            <img src="/global_trucks_mtto/static/src/img/logo_ldn.png"
+                                 style="max-width: 120px; max-height: 120px;"
+                                 alt="Los Dobletroques Neva S.A.S"/>
+                        </div>
+                        <div class="col-9 text-center" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <h3 style="margin: 0; font-weight: bold; color: #875a7b;">Los Dobletroques Neiva S.A.S.</h3>
+                            <p style="margin: 5px 0; font-size: 14px; color: #666;">Calle 13 sur #6A-24</p>
+                            <h4 style="margin: 15px 0 5px 0; font-weight: bold;">Orden de Mantenimiento</h4>
+                            <h5 style="margin: 0;">
+                                <span t-field="o.name"/>
+                            </h5>
+                        </div>
+                    </div>
+
+                    <!-- Información General y del Vehículo -->
+                    <div class="row mb-4">
+                        <div class="col-6">
+                            <h4 style="border-bottom: 2px solid #875a7b; padding-bottom: 5px;">Información General</h4>
+                            <table class="table table-sm">
+                                <tr>
+                                    <td><strong>Fecha de Inicio:</strong></td>
+                                    <td><span t-field="o.date_start"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Fecha de Finalización:</strong></td>
+                                    <td><span t-field="o.date_end"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Cliente:</strong></td>
+                                    <td><span t-field="o.customer_id"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Operador/Conductor:</strong></td>
+                                    <td><span t-field="o.operator_name"/></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-6">
+                            <h4 style="border-bottom: 2px solid #875a7b; padding-bottom: 5px;">Información del Vehículo</h4>
+                            <table class="table table-sm">
+                                <tr>
+                                    <td style="width: 50%;"><strong>Vehículo:</strong></td>
+                                    <td><span t-field="o.vehicle_id"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Tipo:</strong></td>
+                                    <td><span t-field="o.vehicle_type"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Serie/Placa:</strong></td>
+                                    <td><span t-field="o.serie_plate"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>KM / Horas:</strong></td>
+                                    <td><span t-field="o.km_hours"/></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Diagnósticos -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h4 style="border-bottom: 2px solid #875a7b; padding-bottom: 5px; margin-bottom: 15px;">Diagnósticos</h4>
+
+                            <t t-if="not o.diagnosis_ids">
+                                <p class="text-muted">No hay diagnósticos registrados.</p>
+                            </t>
+
+                            <t t-if="o.diagnosis_ids">
+                                <ul style="list-style-type: disc; margin-left: 20px; line-height: 1.8;">
+                                    <t t-foreach="o.diagnosis_ids" t-as="diagnosis">
+                                        <li style="margin-bottom: 8px;">
+                                            <span t-field="diagnosis.name"/>
+                                        </li>
+                                    </t>
+                                </ul>
+                            </t>
+                        </div>
+                    </div>
+
+                    <!-- Trabajos Realizados -->
+                    <t t-set="all_followups" t-value="[]"/>
+                    <t t-foreach="o.diagnosis_ids" t-as="diagnosis">
+                        <t t-foreach="diagnosis.followup_ids" t-as="followup">
+                            <t t-set="all_followups" t-value="all_followups + [followup]"/>
+                        </t>
+                    </t>
+
+                    <t t-if="all_followups">
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h4 style="border-bottom: 2px solid #875a7b; padding-bottom: 5px; margin-bottom: 15px;">Trabajos Realizados</h4>
+
+                                <ul style="list-style-type: disc; margin-left: 20px; line-height: 1.8;">
+                                    <t t-foreach="all_followups" t-as="followup">
+                                        <li style="margin-bottom: 8px;">
+                                            <span t-field="followup.name"/>
+                                        </li>
+                                    </t>
+                                </ul>
+                            </div>
+                        </div>
+                    </t>
+
+                    <!-- Observaciones -->
+                    <t t-if="o.observations">
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h4 style="border-bottom: 2px solid #875a7b; padding-bottom: 5px;">Observaciones</h4>
+                                <p style="white-space: pre-line;"><span t-field="o.observations"/></p>
+                            </div>
+                        </div>
+                    </t>
+
+                    <!-- Firmas (SIN salto de página previo) -->
+                    <div class="row mt-5 mb-5">
+                        <div class="col-6 text-center">
+                            <h5 style="border-bottom: 1px solid #875a7b; padding-bottom: 3px;">Encargado del Mantenimiento</h5>
+
+                            <t t-if="o.maintenance_signature">
+                                <img t-att-src="image_data_uri(o.maintenance_signature)"
+                                     style="max-width: 250px; max-height: 100px; border: 1px solid #ddd; padding: 2px; margin: 20px 0;"/>
+                            </t>
+                            <t t-else="">
+                                <div style="height: 100px; border: 1px dashed #ccc; margin: 20px 0; display: flex; align-items: center; justify-content: center;">
+                                    <span style="color: #999;">Sin firma</span>
+                                </div>
+                            </t>
+
+                            <div style="border-top: 2px solid #000; display: inline-block; min-width: 250px; margin-top: 5px; padding-top: 10px;">
+                                <p style="margin: 2px 0;"><strong><span t-field="o.maintenance_responsible_id"/></strong></p>
+                                <p style="margin: 0; color: #666;">
+                                    <span t-field="o.maintenance_responsible_job"/>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-6 text-center">
+                            <h5 style="border-bottom: 1px solid #875a7b; padding-bottom:3px;">Representante del Cliente</h5>
+
+                            <t t-if="o.customer_signature">
+                                <img t-att-src="image_data_uri(o.customer_signature)"
+                                     style="max-width: 250px; max-height: 100px; border: 1px solid #ddd; padding: 2px; margin: 20px 0;"/>
+                            </t>
+                            <t t-else="">
+                                <div style="height: 100px; border: 1px dashed #ccc; margin: 20px 0; display: flex; align-items: center; justify-content: center;">
+                                    <span style="color: #999;">Sin firma</span>
+                                </div>
+                            </t>
+
+                            <div style="border-top: 2px solid #000; display: inline-block; min-width: 250px; margin-top: 5px; padding-top: 10px;">
+                                <p style="margin: 2px 0;"><strong><span t-field="o.customer_representative_name"/></strong></p>
+                                <p style="margin: 0; color: #666;">
+                                    <span t-field="o.customer_representative_job"/>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Salto de página antes de las imágenes -->
+                    <div style="page-break-after: always;"></div>
+
+                    <!-- Sección de Imágenes -->
+                    <t t-set="all_images" t-value="[]"/>
+                    <t t-foreach="o.diagnosis_ids" t-as="diagnosis">
+                        <t t-foreach="diagnosis.image_ids" t-as="image">
+                            <t t-set="all_images" t-value="all_images + [image]"/>
+                        </t>
+                    </t>
+
+                    <t t-if="all_images">
+                        <!-- Grid fijo 3x4 a "borde" (dentro del margen del paperformat) -->
+                        <style>
+                            .photo-page { padding: 0 !important; margin: 0 !important; }
+
+                            /* A4: 210mm x 297mm. wkhtmltopdf respeta mejor mm que % */
+                            table.photo-grid {
+                                border-collapse: collapse;
+                                table-layout: fixed;
+                                width: 210mm;
+                                height: 297mm;
+                            }
+                            table.photo-grid td {
+                                padding: 0;
+                                margin: 0;
+                                border: 0;
+                                width: 70mm;        /* 210/3 */
+                                height: 74.25mm;    /* 297/4 */
+                                overflow: hidden;
+                                background: #fff;
+                            }
+                            .photo-box {
+                                width: 70mm;
+                                height: 74.25mm;
+                                overflow: hidden;
+                                background: #fff;
+                            }
+                            .photo-box img {
+                                width: 100%;
+                                height: 100%;
+                                object-fit: cover;
+                                display: block;
+                            }
+                        </style>
+
+                        <t t-set="total_images" t-value="len(all_images)"/>
+
+                        <!-- páginas de 12 -->
+                        <t t-foreach="range(0, total_images, 12)" t-as="page_start">
+                            <div class="page photo-page">
+                                <table class="photo-grid">
+                                    <t t-foreach="range(0, 4)" t-as="r">
+                                        <tr>
+                                            <t t-foreach="range(0, 3)" t-as="c">
+                                                <td>
+                                                    <t t-set="idx" t-value="page_start + (r * 3) + c"/>
+                                                    <t t-if="idx &lt; total_images">
+                                                        <t t-set="image" t-value="all_images[idx]"/>
+
+                                                        <!-- thumb 512 si existe, si no original por URL -->
+                                                        <t t-set="thumb_name" t-value="'att_%s__thumb_512.jpg' % image.id"/>
+                                                        <t t-set="thumb" t-value="o.env['ir.attachment'].search([('res_model','=',o._name),('res_id','=',o.id),('name','=',thumb_name),('mimetype','=','image/jpeg')], limit=1)"/>
+                                                        <t t-set="img_id" t-value="(thumb and thumb.id) or image.id"/>
+
+                                                        <div class="photo-box">
+                                                            <img t-att-src="'/web/content/%s' % img_id" alt="foto"/>
+                                                        </div>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <div class="photo-box"></div>
+                                                    </t>
+                                                </td>
+                                            </t>
+                                        </tr>
+                                    </t>
+                                </table>
+                            </div>
+                        </t>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- Reporte LDN -->
+    <template id="report_maintenance_order_ldn">
+        <t t-call="web.html_container">
+            <t t-call="global_trucks_mtto.report_maintenance_order_ldn_document"/>
+        </t>
+    </template>
+</odoo>

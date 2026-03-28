@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<!-- Vista de Formulario con Galería de Imágenes -->
+<record id="view_maintenance_diagnosis_form" model="ir.ui.view">
+    <field name="name">maintenance.diagnosis.form</field>
+    <field name="model">maintenance.diagnosis</field>
+    <field name="arch" type="xml">
+        <form string="Diagnóstico de Falla">
+            <header>
+                <field name="is_completed" widget="boolean_button" options="{'terminology': 'active'}"/>
+            </header>
+            <sheet>
+                <group>
+                    <field name="attachment_count" invisible="1"/>
+                </group>
+
+                <!-- Descripción de la Falla con estilo de título -->
+                <group string="DESCRIPCIÓN DE LA FALLA" class="o_diagnosis_section_header">
+                    <field name="name" 
+                           nolabel="1" 
+                           placeholder="Describa la falla detectada..."
+                           widget="text"
+                           options="{'collaborative': false}"/>
+                </group>
+
+                <!-- Actividades Realizadas -->
+                <group string="ACTIVIDADES REALIZADAS" class="o_diagnosis_section_header mt32">
+                    <field name="followup_ids" nolabel="1" colspan="2">
+                        <tree editable="bottom" string="Descripción del Trabajo o Actividad">
+                            <field name="name" string="Descripción del Trabajo o Actividad"/>
+                        </tree>
+                    </field>
+                </group>
+
+                <!-- Imágenes Adjuntas -->
+                <group string="IMÁGENES ADJUNTAS" class="o_diagnosis_section_header mt32">
+                    <group colspan="2" col="1">
+                        <field name="image_ids" 
+                               widget="many2many_binary" 
+                               string="📷 Subir Imágenes"
+                               options="{'accepted_file_extensions': 'image/*'}"/>
+                    </group>
+                    
+                    <group colspan="2" col="1" class="o_diagnosis_image_gallery_container">
+                        <div class="o_diagnosis_image_gallery_grid">
+                            <field name="image_ids" 
+                                   nolabel="1" 
+                                   widget="many2many"
+                                   mode="kanban"
+                                   options="{'create': false, 'delete': true}"
+                                   context="{'default_res_model': 'maintenance.diagnosis'}">
+                                <kanban>
+                                    <field name="id"/>
+                                    <field name="name"/>
+                                    <field name="datas"/>
+                                    <field name="mimetype"/>
+                                    <field name="create_date"/>
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <div class="o_attachment_kanban_box">
+                                                <div class="o_attachment_image_container">
+                                                    <div class="o_attachment_image_frame">
+                                                        <div class="o_image">
+                                                            <t t-if="record.mimetype.raw_value and record.mimetype.raw_value.includes('image')">
+                                                                <img t-att-src="'/web/image/' + record.id.raw_value" 
+                                                                     t-att-alt="record.name.raw_value"
+                                                                     class="o_attachment_thumbnail"/>
+                                                            </t>
+                                                            <t t-else="">
+                                                                <i class="fa fa-file-o fa-3x text-muted"/>
+                                                            </t>
+                                                        </div>
+                                                    </div>
+                                                    <div class="o_attachment_overlay">
+                                                        <i class="fa fa-search-plus"/>
+                                                    </div>
+                                                </div>
+                                                <div class="o_attachment_details">
+                                                    <div class="o_attachment_name text-truncate">
+                                                        <field name="name"/>
+                                                    </div>
+                                                    <div class="o_attachment_date text-muted small">
+                                                        <i class="fa fa-calendar"/> 
+                                                        <field name="create_date" widget="date"/>
+                                                    </div>
+                                                </div>
+                                                <div class="o_attachment_actions">
+                                                    <a type="delete" 
+                                                       class="btn btn-sm btn-outline-danger w-100">
+                                                        <i class="fa fa-trash"/> Eliminar
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+                            </field>
+                        </div>
+                    </group>
+                </group>
+            </sheet>
+        </form>
+    </field>
+</record>
+</odoo>

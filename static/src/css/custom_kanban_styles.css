@@ -1,0 +1,7 @@
+@media screen and (max-width: 768px) {
+    .oe_kanban_global {
+        display: block;
+        margin: 0 auto;
+        width: 90%; /* Ajusta el ancho para móviles */
+    }
+}

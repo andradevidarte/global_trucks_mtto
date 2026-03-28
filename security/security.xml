@@ -1,0 +1,78 @@
+<odoo>
+    <!-- Categoría para agrupar los permisos del módulo -->
+    <record id="module_category_global_trucks_mtto" model="ir.module.category">
+        <field name="name">Global Trucks - Mantenimiento</field>
+        <field name="sequence">35</field>
+    </record>
+
+    <!-- Grupos -->
+    <record id="group_mtto_admin" model="res.groups">
+        <field name="name">Mantenimiento / Administración</field>
+        <field name="category_id" ref="global_trucks_mtto.module_category_global_trucks_mtto"/>
+    </record>
+
+    <!-- IMPORTANTE: crear primero el grupo base -->
+    <record id="group_mtto_maintenance" model="res.groups">
+        <field name="name">Mantenimiento / Taller</field>
+        <field name="category_id" ref="global_trucks_mtto.module_category_global_trucks_mtto"/>
+    </record>
+
+    <record id="group_mtto_supervisor" model="res.groups">
+        <field name="name">Mantenimiento / Supervisor</field>
+        <field name="category_id" ref="global_trucks_mtto.module_category_global_trucks_mtto"/>
+        <field name="implied_ids" eval="[(4, ref('global_trucks_mtto.group_mtto_maintenance'))]"/>
+    </record>
+
+    <record id="group_mtto_sales" model="res.groups">
+        <field name="name">Mantenimiento / Ventas</field>
+        <field name="category_id" ref="global_trucks_mtto.module_category_global_trucks_mtto"/>
+    </record>
+
+    <!-- ========================================================= -->
+    <!-- NUEVOS GRUPOS: Visibilidad por categoría -->
+    <!-- ========================================================= -->
+    <record id="group_mtto_only_vehicular" model="res.groups">
+        <field name="name">Mantenimiento / Solo Vehicular</field>
+        <field name="category_id" ref="global_trucks_mtto.module_category_global_trucks_mtto"/>
+    </record>
+
+    <record id="group_mtto_only_machinery" model="res.groups">
+        <field name="name">Mantenimiento / Solo Maquinaria</field>
+        <field name="category_id" ref="global_trucks_mtto.module_category_global_trucks_mtto"/>
+    </record>
+
+    <!-- ========================================================= -->
+    <!-- RECORD RULES: maintenance.vehicle -->
+    <!-- ========================================================= -->
+    <record id="rule_mtto_vehicle_only_vehicular" model="ir.rule">
+        <field name="name">Vehículos: Solo Vehicular</field>
+        <field name="model_id" ref="global_trucks_mtto.model_maintenance_vehicle"/>
+        <field name="domain_force">[('category','=','vehicular')]</field>
+        <field name="groups" eval="[(4, ref('global_trucks_mtto.group_mtto_only_vehicular'))]"/>
+    </record>
+
+    <record id="rule_mtto_vehicle_only_machinery" model="ir.rule">
+        <field name="name">Vehículos: Solo Maquinaria</field>
+        <field name="model_id" ref="global_trucks_mtto.model_maintenance_vehicle"/>
+        <field name="domain_force">[('category','=','machinery')]</field>
+        <field name="groups" eval="[(4, ref('global_trucks_mtto.group_mtto_only_machinery'))]"/>
+    </record>
+
+    <!-- ========================================================= -->
+    <!-- RECORD RULES: maintenance.order -->
+    <!-- Usa vehicle_id.category directamente (sin related) -->
+    <!-- ========================================================= -->
+    <record id="rule_mtto_order_only_vehicular" model="ir.rule">
+        <field name="name">Órdenes: Solo Vehicular</field>
+        <field name="model_id" ref="global_trucks_mtto.model_maintenance_order"/>
+        <field name="domain_force">[('vehicle_id.category','=','vehicular')]</field>
+        <field name="groups" eval="[(4, ref('global_trucks_mtto.group_mtto_only_vehicular'))]"/>
+    </record>
+
+    <record id="rule_mtto_order_only_machinery" model="ir.rule">
+        <field name="name">Órdenes: Solo Maquinaria</field>
+        <field name="model_id" ref="global_trucks_mtto.model_maintenance_order"/>
+        <field name="domain_force">[('vehicle_id.category','=','machinery')]</field>
+        <field name="groups" eval="[(4, ref('global_trucks_mtto.group_mtto_only_machinery'))]"/>
+    </record>
+</odoo>
