@@ -27,7 +27,7 @@
                         border-bottom: 2px solid #875a7b;
                         padding-bottom: 6px;
                         margin: 0 0 10px 0;
-                        font-weight: 700;
+                        font-weight: 600;
                         color: #2f2f2f;
                     }
                     .ldn-card{
@@ -42,7 +42,7 @@
                         width: 100%;
                         border-collapse: collapse;
                         table-layout: fixed;
-                        font-size: 13.5px;  /* sube tamaño */
+                        font-size: 11.5px;  /* sube tamaño */
                     }
                     table.ldn-table th,
                     table.ldn-table td{
@@ -67,7 +67,7 @@
                         width: 100%;
                         border-collapse: collapse;
                         table-layout: fixed;
-                        font-size: 11.5px; /* más pequeña */
+                        font-size: 10.5px; /* más pequeña */
                     }
                     table.ldn-parts-table th,
                     table.ldn-parts-table td{
