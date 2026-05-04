@@ -29,7 +29,9 @@
                         margin: 0 0 10px 0;
                         font-weight: 600;
                         color: #2f2f2f;
+                        font-size: 13px; /* ↓ más pequeño para verse elegante */
                     }
+
                     .ldn-card{
                         border: 1px solid #e5e5e5;
                         border-radius: 6px;
@@ -37,17 +39,17 @@
                         background: #fff;
                     }
 
-                    /* TABLAS GENERALES (más grande) */
+                    /* TABLAS GENERALES */
                     table.ldn-table{
                         width: 100%;
                         border-collapse: collapse;
                         table-layout: fixed;
-                        font-size: 11.5px;  /* sube tamaño */
+                        font-size: 11px;
                     }
                     table.ldn-table th,
                     table.ldn-table td{
                         border: 1px solid #e6e6e6;
-                        padding: 8px 9px;   /* un poco más de aire */
+                        padding: 7px 8px;
                         vertical-align: top;
                         word-wrap: break-word;
                     }
@@ -62,17 +64,30 @@
                         color: #222;
                     }
 
+                    /* LISTAS (Diagnósticos / Trabajos) */
+                    ul.ldn-list,
+                    ul.ldn-list li{
+                        font-size: 11px; /* ↓ reduce contenido */
+                        line-height: 1.45;
+                    }
+                    ul.ldn-list{
+                        margin-left: 20px;
+                    }
+                    ul.ldn-list li{
+                        margin-bottom: 6px;
+                    }
+
                     /* TABLA DE REPUESTOS (más pequeña) */
                     table.ldn-parts-table{
                         width: 100%;
                         border-collapse: collapse;
                         table-layout: fixed;
-                        font-size: 10.5px; /* más pequeña */
+                        font-size: 10.5px; /* ↓ más pequeña */
                     }
                     table.ldn-parts-table th,
                     table.ldn-parts-table td{
                         border: 1px solid #e6e6e6;
-                        padding: 6px 7px;
+                        padding: 5px 6px;  /* ↓ más compacto */
                         vertical-align: top;
                         word-wrap: break-word;
                     }
@@ -82,73 +97,74 @@
                     }
                     </style>
 
+                    <!-- Información General y Vehículo -->
                     <div class="row mb-4">
-                    <div class="col-6">
-                        <h4 class="ldn-section-title">Información General</h4>
-                        <div class="ldn-card">
-                        <table class="ldn-table">
-                            <tbody>
-                            <tr>
-                                <th>Fecha de Inicio</th>
-                                <td><span t-field="o.date_start"/></td>
-                            </tr>
-                            <tr>
-                                <th>Fecha de Finalización</th>
-                                <td><span t-field="o.date_end"/></td>
-                            </tr>
-                            <tr>
-                                <th>Cliente</th>
-                                <td><span t-field="o.customer_id"/></td>
-                            </tr>
-                            <tr>
-                                <th>Operador/Conductor</th>
-                                <td><span t-field="o.operator_name"/></td>
-                            </tr>
-                            </tbody>
-                        </table>
+                        <div class="col-6">
+                            <h4 class="ldn-section-title">Información General</h4>
+                            <div class="ldn-card">
+                                <table class="ldn-table">
+                                    <tbody>
+                                        <tr>
+                                            <th>Fecha de Inicio</th>
+                                            <td><span t-field="o.date_start"/></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Fecha de Finalización</th>
+                                            <td><span t-field="o.date_end"/></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Cliente</th>
+                                            <td><span t-field="o.customer_id"/></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Operador/Conductor</th>
+                                            <td><span t-field="o.operator_name"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="col-6">
-                        <h4 class="ldn-section-title">Información del Vehículo</h4>
-                        <div class="ldn-card">
-                        <table class="ldn-table">
-                            <tbody>
-                            <tr>
-                                <th>Vehículo</th>
-                                <td><span t-field="o.vehicle_id"/></td>
-                            </tr>
-                            <tr>
-                                <th>Tipo</th>
-                                <td><span t-field="o.vehicle_type"/></td>
-                            </tr>
-                            <tr>
-                                <th>Serie/Placa</th>
-                                <td><span t-field="o.serie_plate"/></td>
-                            </tr>
-                            <tr>
-                                <th>KM / Horas</th>
-                                <td><span t-field="o.km_hours"/></td>
-                            </tr>
-                            </tbody>
-                        </table>
+                        <div class="col-6">
+                            <h4 class="ldn-section-title">Información del Vehículo</h4>
+                            <div class="ldn-card">
+                                <table class="ldn-table">
+                                    <tbody>
+                                        <tr>
+                                            <th>Vehículo</th>
+                                            <td><span t-field="o.vehicle_id"/></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Tipo</th>
+                                            <td><span t-field="o.vehicle_type"/></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Serie/Placa</th>
+                                            <td><span t-field="o.serie_plate"/></td>
+                                        </tr>
+                                        <tr>
+                                            <th>KM / Horas</th>
+                                            <td><span t-field="o.km_hours"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                    </div>
                     </div>
 
                     <!-- Diagnósticos -->
                     <div class="row mb-4">
                         <div class="col-12">
-                            <h4 style="border-bottom: 2px solid #875a7b; padding-bottom: 5px; margin-bottom: 15px;">Diagnósticos</h4>
+                            <h4 class="ldn-section-title">Diagnósticos</h4>
 
                             <t t-if="not o.diagnosis_ids">
                                 <p class="text-muted">No hay diagnósticos registrados.</p>
                             </t>
 
                             <t t-if="o.diagnosis_ids">
-                                <ul style="list-style-type: disc; margin-left: 20px; line-height: 1.8;">
+                                <ul class="ldn-list" style="list-style-type: disc;">
                                     <t t-foreach="o.diagnosis_ids" t-as="diagnosis">
-                                        <li style="margin-bottom: 8px;">
+                                        <li>
                                             <span t-field="diagnosis.name"/>
                                         </li>
                                     </t>
@@ -168,11 +184,11 @@
                     <t t-if="all_followups">
                         <div class="row mb-4">
                             <div class="col-12">
-                                <h4 style="border-bottom: 2px solid #875a7b; padding-bottom: 5px; margin-bottom: 15px;">Trabajos Realizados</h4>
+                                <h4 class="ldn-section-title">Trabajos Realizados</h4>
 
-                                <ul style="list-style-type: disc; margin-left: 20px; line-height: 1.8;">
+                                <ul class="ldn-list" style="list-style-type: disc;">
                                     <t t-foreach="all_followups" t-as="followup">
-                                        <li style="margin-bottom: 8px;">
+                                        <li>
                                             <span t-field="followup.name"/>
                                         </li>
                                     </t>
@@ -187,16 +203,14 @@
                     <t t-if="show_parts">
                         <div class="row mb-4">
                             <div class="col-12">
-                                <h4 style="border-bottom: 2px solid #875a7b; padding-bottom: 5px; margin-bottom: 15px;">
-                                    Otros Repuestos Suministrados
-                                </h4>
+                                <h4 class="ldn-section-title">Otros Repuestos Suministrados</h4>
 
                                 <t t-if="not o.parts_line_ids">
                                     <p class="text-muted">No hay repuestos registrados.</p>
                                 </t>
 
                                 <t t-if="o.parts_line_ids">
-                                    <table class="table table-sm">
+                                    <table class="ldn-parts-table">
                                         <thead>
                                             <tr>
                                                 <th>Repuesto</th>
@@ -223,8 +237,10 @@
                     <t t-if="o.observations">
                         <div class="row mb-4">
                             <div class="col-12">
-                                <h4 style="border-bottom: 2px solid #875a7b; padding-bottom: 5px;">Observaciones</h4>
-                                <p style="white-space: pre-line;"><span t-field="o.observations"/></p>
+                                <h4 class="ldn-section-title">Observaciones</h4>
+                                <p style="white-space: pre-line; font-size: 11px; line-height: 1.45;">
+                                    <span t-field="o.observations"/>
+                                </p>
                             </div>
                         </div>
                     </t>
@@ -232,7 +248,7 @@
                     <!-- Firmas (SIN salto de página previo) -->
                     <div class="row mt-5 mb-5">
                         <div class="col-6 text-center">
-                            <h5 style="border-bottom: 1px solid #875a7b; padding-bottom: 3px;">Encargado del Mantenimiento</h5>
+                            <h5 style="border-bottom: 1px solid #875a7b; padding-bottom: 3px; font-size: 12px;">Encargado del Mantenimiento</h5>
 
                             <t t-if="o.maintenance_signature">
                                 <img t-att-src="image_data_uri(o.maintenance_signature)"
@@ -245,15 +261,15 @@
                             </t>
 
                             <div style="border-top: 2px solid #000; display: inline-block; min-width: 250px; margin-top: 5px; padding-top: 10px;">
-                                <p style="margin: 2px 0;"><strong><span t-field="o.maintenance_responsible_id"/></strong></p>
-                                <p style="margin: 0; color: #666;">
+                                <p style="margin: 2px 0; font-size: 11px;"><strong><span t-field="o.maintenance_responsible_id"/></strong></p>
+                                <p style="margin: 0; color: #666; font-size: 11px;">
                                     <span t-field="o.maintenance_responsible_job"/>
                                 </p>
                             </div>
                         </div>
 
                         <div class="col-6 text-center">
-                            <h5 style="border-bottom: 1px solid #875a7b; padding-bottom:3px;">Representante del Cliente</h5>
+                            <h5 style="border-bottom: 1px solid #875a7b; padding-bottom:3px; font-size: 12px;">Representante del Cliente</h5>
 
                             <t t-if="o.customer_signature">
                                 <img t-att-src="image_data_uri(o.customer_signature)"
@@ -266,8 +282,8 @@
                             </t>
 
                             <div style="border-top: 2px solid #000; display: inline-block; min-width: 250px; margin-top: 5px; padding-top: 10px;">
-                                <p style="margin: 2px 0;"><strong><span t-field="o.customer_representative_name"/></strong></p>
-                                <p style="margin: 0; color: #666;">
+                                <p style="margin: 2px 0; font-size: 11px;"><strong><span t-field="o.customer_representative_name"/></strong></p>
+                                <p style="margin: 0; color: #666; font-size: 11px;">
                                     <span t-field="o.customer_representative_job"/>
                                 </p>
                             </div>
@@ -286,4 +302,3 @@
         </t>
     </template>
 </odoo>
-
