@@ -410,6 +410,13 @@ class MaintenanceOrder(models.Model):
         })
 
         return {"type": "ir.actions.act_url", "url": f"/web/content/{att.id}?download=true", "target": "self"}
+    
+    include_spares_ldn = fields.Boolean(
+        string="Incluir repuestos en reporte LDN",
+        default=False,
+        help="Si está activado, el reporte LDN incluirá la lista de repuestos. "
+            "Si no hay diagnósticos, los repuestos se incluyen por defecto."
+    )
 
 
 class MaintenanceOrderPartLine(models.Model):

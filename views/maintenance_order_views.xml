@@ -155,7 +155,9 @@
         <field name="model">maintenance.order</field>
         <field name="arch" type="xml">
             <search>
-                <field name="name" string="Orden"/>
+		<field name="name"
+       		       string="Buscar (Serie/Placa u Orden)"
+       		       filter_domain="['|', ('serie_plate', 'ilike', self), ('name', 'ilike', self)]"/>
                 <field name="vehicle_type" string="Tipo Vehículo"/>
                 <field name="serie_plate" string="Serie/Placa"/>
                 <field name="customer_id" string="Cliente"/>

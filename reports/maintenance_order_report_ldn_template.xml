@@ -22,50 +22,118 @@
                         </div>
                     </div>
 
-                    <!-- Información General y del Vehículo -->
+                    <style>
+                    .ldn-section-title{
+                        border-bottom: 2px solid #875a7b;
+                        padding-bottom: 6px;
+                        margin: 0 0 10px 0;
+                        font-weight: 700;
+                        color: #2f2f2f;
+                    }
+                    .ldn-card{
+                        border: 1px solid #e5e5e5;
+                        border-radius: 6px;
+                        padding: 10px 12px;
+                        background: #fff;
+                    }
+
+                    /* TABLAS GENERALES (más grande) */
+                    table.ldn-table{
+                        width: 100%;
+                        border-collapse: collapse;
+                        table-layout: fixed;
+                        font-size: 13.5px;  /* sube tamaño */
+                    }
+                    table.ldn-table th,
+                    table.ldn-table td{
+                        border: 1px solid #e6e6e6;
+                        padding: 8px 9px;   /* un poco más de aire */
+                        vertical-align: top;
+                        word-wrap: break-word;
+                    }
+                    table.ldn-table th{
+                        width: 42%;
+                        background: #faf7fb;
+                        color: #333;
+                        font-weight: 700;
+                    }
+                    table.ldn-table td{
+                        background: #fff;
+                        color: #222;
+                    }
+
+                    /* TABLA DE REPUESTOS (más pequeña) */
+                    table.ldn-parts-table{
+                        width: 100%;
+                        border-collapse: collapse;
+                        table-layout: fixed;
+                        font-size: 11.5px; /* más pequeña */
+                    }
+                    table.ldn-parts-table th,
+                    table.ldn-parts-table td{
+                        border: 1px solid #e6e6e6;
+                        padding: 6px 7px;
+                        vertical-align: top;
+                        word-wrap: break-word;
+                    }
+                    table.ldn-parts-table th{
+                        background: #f7f7f7;
+                        font-weight: 700;
+                    }
+                    </style>
+
                     <div class="row mb-4">
-                        <div class="col-6">
-                            <h4 style="border-bottom: 2px solid #875a7b; padding-bottom: 5px;">Información General</h4>
-                            <table class="table table-sm">
-                                <tr>
-                                    <td><strong>Fecha de Inicio:</strong></td>
-                                    <td><span t-field="o.date_start"/></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Fecha de Finalización:</strong></td>
-                                    <td><span t-field="o.date_end"/></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Cliente:</strong></td>
-                                    <td><span t-field="o.customer_id"/></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Operador/Conductor:</strong></td>
-                                    <td><span t-field="o.operator_name"/></td>
-                                </tr>
-                            </table>
+                    <div class="col-6">
+                        <h4 class="ldn-section-title">Información General</h4>
+                        <div class="ldn-card">
+                        <table class="ldn-table">
+                            <tbody>
+                            <tr>
+                                <th>Fecha de Inicio</th>
+                                <td><span t-field="o.date_start"/></td>
+                            </tr>
+                            <tr>
+                                <th>Fecha de Finalización</th>
+                                <td><span t-field="o.date_end"/></td>
+                            </tr>
+                            <tr>
+                                <th>Cliente</th>
+                                <td><span t-field="o.customer_id"/></td>
+                            </tr>
+                            <tr>
+                                <th>Operador/Conductor</th>
+                                <td><span t-field="o.operator_name"/></td>
+                            </tr>
+                            </tbody>
+                        </table>
                         </div>
-                        <div class="col-6">
-                            <h4 style="border-bottom: 2px solid #875a7b; padding-bottom: 5px;">Información del Vehículo</h4>
-                            <table class="table table-sm">
-                                <tr>
-                                    <td style="width: 50%;"><strong>Vehículo:</strong></td>
-                                    <td><span t-field="o.vehicle_id"/></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Tipo:</strong></td>
-                                    <td><span t-field="o.vehicle_type"/></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Serie/Placa:</strong></td>
-                                    <td><span t-field="o.serie_plate"/></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>KM / Horas:</strong></td>
-                                    <td><span t-field="o.km_hours"/></td>
-                                </tr>
-                            </table>
+                    </div>
+
+                    <div class="col-6">
+                        <h4 class="ldn-section-title">Información del Vehículo</h4>
+                        <div class="ldn-card">
+                        <table class="ldn-table">
+                            <tbody>
+                            <tr>
+                                <th>Vehículo</th>
+                                <td><span t-field="o.vehicle_id"/></td>
+                            </tr>
+                            <tr>
+                                <th>Tipo</th>
+                                <td><span t-field="o.vehicle_type"/></td>
+                            </tr>
+                            <tr>
+                                <th>Serie/Placa</th>
+                                <td><span t-field="o.serie_plate"/></td>
+                            </tr>
+                            <tr>
+                                <th>KM / Horas</th>
+                                <td><span t-field="o.km_hours"/></td>
+                            </tr>
+                            </tbody>
+                        </table>
                         </div>
+                    </div>
                     </div>
 
                     <!-- Diagnósticos -->
@@ -109,6 +177,44 @@
                                         </li>
                                     </t>
                                 </ul>
+                            </div>
+                        </div>
+                    </t>
+
+                    <!-- Repuestos suministrados (opcional; por defecto si NO hay diagnósticos) -->
+                    <t t-set="show_parts" t-value="o.include_spares_ldn or not o.diagnosis_ids"/>
+
+                    <t t-if="show_parts">
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h4 style="border-bottom: 2px solid #875a7b; padding-bottom: 5px; margin-bottom: 15px;">
+                                    Otros Repuestos Suministrados
+                                </h4>
+
+                                <t t-if="not o.parts_line_ids">
+                                    <p class="text-muted">No hay repuestos registrados.</p>
+                                </t>
+
+                                <t t-if="o.parts_line_ids">
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Repuesto</th>
+                                                <th class="text-right">Cant. Entregada</th>
+                                                <th>Notas</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="o.parts_line_ids" t-as="line">
+                                                <tr>
+                                                    <td><span t-esc="line.product_name"/></td>
+                                                    <td class="text-right"><span t-esc="line.qty_delivered"/></td>
+                                                    <td><span t-esc="line.notes or ''"/></td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </t>
                             </div>
                         </div>
                     </t>
@@ -168,86 +274,6 @@
                         </div>
                     </div>
 
-                    <!-- Salto de página antes de las imágenes -->
-                    <div style="page-break-after: always;"></div>
-
-                    <!-- Sección de Imágenes -->
-                    <t t-set="all_images" t-value="[]"/>
-                    <t t-foreach="o.diagnosis_ids" t-as="diagnosis">
-                        <t t-foreach="diagnosis.image_ids" t-as="image">
-                            <t t-set="all_images" t-value="all_images + [image]"/>
-                        </t>
-                    </t>
-
-                    <t t-if="all_images">
-                        <!-- Grid fijo 3x4 a "borde" (dentro del margen del paperformat) -->
-                        <style>
-                            .photo-page { padding: 0 !important; margin: 0 !important; }
-
-                            /* A4: 210mm x 297mm. wkhtmltopdf respeta mejor mm que % */
-                            table.photo-grid {
-                                border-collapse: collapse;
-                                table-layout: fixed;
-                                width: 210mm;
-                                height: 297mm;
-                            }
-                            table.photo-grid td {
-                                padding: 0;
-                                margin: 0;
-                                border: 0;
-                                width: 70mm;        /* 210/3 */
-                                height: 74.25mm;    /* 297/4 */
-                                overflow: hidden;
-                                background: #fff;
-                            }
-                            .photo-box {
-                                width: 70mm;
-                                height: 74.25mm;
-                                overflow: hidden;
-                                background: #fff;
-                            }
-                            .photo-box img {
-                                width: 100%;
-                                height: 100%;
-                                object-fit: cover;
-                                display: block;
-                            }
-                        </style>
-
-                        <t t-set="total_images" t-value="len(all_images)"/>
-
-                        <!-- páginas de 12 -->
-                        <t t-foreach="range(0, total_images, 12)" t-as="page_start">
-                            <div class="page photo-page">
-                                <table class="photo-grid">
-                                    <t t-foreach="range(0, 4)" t-as="r">
-                                        <tr>
-                                            <t t-foreach="range(0, 3)" t-as="c">
-                                                <td>
-                                                    <t t-set="idx" t-value="page_start + (r * 3) + c"/>
-                                                    <t t-if="idx &lt; total_images">
-                                                        <t t-set="image" t-value="all_images[idx]"/>
-
-                                                        <!-- thumb 512 si existe, si no original por URL -->
-                                                        <t t-set="thumb_name" t-value="'att_%s__thumb_512.jpg' % image.id"/>
-                                                        <t t-set="thumb" t-value="o.env['ir.attachment'].search([('res_model','=',o._name),('res_id','=',o.id),('name','=',thumb_name),('mimetype','=','image/jpeg')], limit=1)"/>
-                                                        <t t-set="img_id" t-value="(thumb and thumb.id) or image.id"/>
-
-                                                        <div class="photo-box">
-                                                            <img t-att-src="'/web/content/%s' % img_id" alt="foto"/>
-                                                        </div>
-                                                    </t>
-                                                    <t t-else="">
-                                                        <div class="photo-box"></div>
-                                                    </t>
-                                                </td>
-                                            </t>
-                                        </tr>
-                                    </t>
-                                </table>
-                            </div>
-                        </t>
-                    </t>
                 </div>
             </t>
         </t>
@@ -260,3 +286,4 @@
         </t>
     </template>
 </odoo>
+
