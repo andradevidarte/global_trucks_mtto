@@ -67,7 +67,7 @@
                     /* LISTAS (Diagnósticos / Trabajos) */
                     ul.ldn-list,
                     ul.ldn-list li{
-                        font-size: 11px; /* ↓ reduce contenido */
+                        font-size: 12px; /* ↓ reduce contenido */
                         line-height: 1.45;
                     }
                     ul.ldn-list{
