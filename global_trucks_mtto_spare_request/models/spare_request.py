@@ -1,6 +1,9 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import AccessError, UserError
 
+NEW_REQUEST_NAME = 'Nuevo'
+QTY_TOLERANCE = 1e-6
+
 
 class MaintenanceSpareRequest(models.Model):
     _name = 'maintenance.spare.request'
@@ -8,7 +11,7 @@ class MaintenanceSpareRequest(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'id desc'
 
-    name = fields.Char(string='Consecutivo', default='Nuevo', readonly=True, copy=False, tracking=True)
+    name = fields.Char(string='Consecutivo', default=lambda self: _(NEW_REQUEST_NAME), readonly=True, copy=False, tracking=True)
     order_id = fields.Many2one(
         'maintenance.order',
         string='Orden de Mantenimiento',
@@ -328,8 +331,8 @@ class MaintenanceSpareRequest(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
-            if vals.get('name', 'Nuevo') == 'Nuevo':
-                vals['name'] = self.env['ir.sequence'].next_by_code('maintenance.spare.request') or 'Nuevo'
+            if vals.get('name', NEW_REQUEST_NAME) in {NEW_REQUEST_NAME, _(NEW_REQUEST_NAME)}:
+                vals['name'] = self.env['ir.sequence'].next_by_code('maintenance.spare.request') or NEW_REQUEST_NAME
         records = super().create(vals_list)
         for rec in records:
             rec.order_id.message_post(
@@ -408,7 +411,7 @@ class MaintenanceSpareRequestLine(models.Model):
         if qty <= 0:
             return
         available = self.env['stock.quant']._get_available_quantity(self.product_id, location, strict=True)
-        if available + 1e-6 < qty:
+        if available + QTY_TOLERANCE < qty:
             raise UserError(
                 _(
                     'No hay stock suficiente para %s. Solicitado/aprobado: %.2f, disponible: %.2f.'
