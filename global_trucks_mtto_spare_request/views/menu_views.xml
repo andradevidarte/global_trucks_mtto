@@ -1,0 +1,8 @@
+<odoo>
+    <menuitem id="menu_spare_requests"
+              name="Solicitudes de Repuestos"
+              parent="global_trucks_mtto.menu_global_trucks_root"
+              action="action_maintenance_spare_request"
+              sequence="20"
+              groups="global_trucks_mtto_spare_request.group_spare_technician,global_trucks_mtto_spare_request.group_spare_storekeeper,global_trucks_mtto.group_mtto_admin,global_trucks_mtto.group_mtto_supervisor"/>
+</odoo>

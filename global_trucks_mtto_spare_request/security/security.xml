@@ -1,0 +1,26 @@
+<odoo>
+    <record id="group_spare_technician" model="res.groups">
+        <field name="name">Mantenimiento / Técnico Solicitante de Repuestos</field>
+        <field name="category_id" ref="global_trucks_mtto.module_category_global_trucks_mtto"/>
+        <field name="implied_ids" eval="[(4, ref('global_trucks_mtto.group_mtto_maintenance'))]"/>
+    </record>
+
+    <record id="group_spare_storekeeper" model="res.groups">
+        <field name="name">Mantenimiento / Almacén Repuestos</field>
+        <field name="category_id" ref="global_trucks_mtto.module_category_global_trucks_mtto"/>
+    </record>
+
+    <record id="rule_spare_request_technician_own" model="ir.rule">
+        <field name="name">Solicitudes repuestos: técnico solo propias</field>
+        <field name="model_id" ref="model_maintenance_spare_request"/>
+        <field name="domain_force">['|', ('requester_id', '=', user.id), ('create_uid', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('global_trucks_mtto_spare_request.group_spare_technician'))]"/>
+    </record>
+
+    <record id="rule_spare_request_line_technician_own" model="ir.rule">
+        <field name="name">Líneas solicitud repuestos: técnico solo propias</field>
+        <field name="model_id" ref="model_maintenance_spare_request_line"/>
+        <field name="domain_force">[('request_id.requester_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('global_trucks_mtto_spare_request.group_spare_technician'))]"/>
+    </record>
+</odoo>

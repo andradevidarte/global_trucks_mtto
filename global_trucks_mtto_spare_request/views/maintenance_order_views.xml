@@ -1,0 +1,35 @@
+<odoo>
+    <record id="view_maintenance_order_form_spare_request_inherit" model="ir.ui.view">
+        <field name="name">maintenance.order.form.spare.request.inherit</field>
+        <field name="model">maintenance.order</field>
+        <field name="inherit_id" ref="global_trucks_mtto.view_maintenance_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <div class="oe_button_box" name="button_box">
+                    <button name="action_view_spare_requests" type="object" class="oe_stat_button" icon="fa-cubes">
+                        <field name="spare_request_count" string="Solicitudes de Repuestos" widget="statinfo"/>
+                    </button>
+                </div>
+            </xpath>
+
+            <xpath expr="//notebook" position="inside">
+                <page string="Solicitudes de Repuestos">
+                    <field name="spare_request_ids" context="{'default_order_id': id, 'default_requester_id': uid}">
+                        <list>
+                            <field name="name"/>
+                            <field name="requester_id"/>
+                            <field name="warehouse_id"/>
+                            <field name="request_date"/>
+                            <field name="state" widget="badge"
+                                   decoration-muted="state == 'draft'"
+                                   decoration-info="state == 'requested'"
+                                   decoration-warning="state in ('approved', 'partially_delivered')"
+                                   decoration-success="state == 'delivered'"
+                                   decoration-danger="state == 'rejected'"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
