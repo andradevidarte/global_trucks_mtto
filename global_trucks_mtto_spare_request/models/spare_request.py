@@ -197,7 +197,7 @@ class MaintenanceSpareRequest(models.Model):
                 raise UserError(_('Solo se pueden aprobar solicitudes en estado solicitado/aprobado/parcial.'))
 
             for line in rec.line_ids:
-                qty_approved = line.qty_approved if line.qty_approved > 0 else line.qty_requested
+                qty_approved = line.qty_approved
                 if qty_approved < 0 or qty_approved > line.qty_requested:
                     raise UserError(_('La cantidad aprobada debe estar entre 0 y la solicitada.'))
                 if qty_approved == 0:
