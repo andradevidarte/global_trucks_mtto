@@ -1,8 +1,8 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import AccessError, UserError
+from odoo.tools.float_utils import float_compare
 
 NEW_REQUEST_NAME = 'Nuevo'
-QTY_TOLERANCE = 1e-6
 
 
 class MaintenanceSpareRequest(models.Model):
@@ -11,7 +11,7 @@ class MaintenanceSpareRequest(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'id desc'
 
-    name = fields.Char(string='Consecutivo', default=lambda self: _(NEW_REQUEST_NAME), readonly=True, copy=False, tracking=True)
+    name = fields.Char(string='Consecutivo', default=NEW_REQUEST_NAME, readonly=True, copy=False, tracking=True)
     order_id = fields.Many2one(
         'maintenance.order',
         string='Orden de Mantenimiento',
@@ -273,6 +273,7 @@ class MaintenanceSpareRequest(models.Model):
                 'origin': rec.name,
             })
 
+            move_pending_qty = []
             for line in lines_to_deliver:
                 pending_qty = line.qty_approved - line.qty_delivered
                 line._check_available_qty(pending_qty, rec.source_location_id)
@@ -285,7 +286,7 @@ class MaintenanceSpareRequest(models.Model):
                     'location_id': rec.source_location_id.id,
                     'location_dest_id': rec.destination_location_id.id,
                 })
-                move.quantity_done = pending_qty
+                move_pending_qty.append((move, pending_qty))
 
                 new_delivered = line.qty_delivered + pending_qty
                 line.write({
@@ -295,6 +296,11 @@ class MaintenanceSpareRequest(models.Model):
 
             picking.action_confirm()
             picking.action_assign()
+            for move, pending_qty in move_pending_qty:
+                if hasattr(move, '_set_quantity_done'):
+                    move._set_quantity_done(pending_qty)
+                else:
+                    move.quantity_done = pending_qty
             picking.button_validate()
 
             rec.write({
@@ -331,7 +337,7 @@ class MaintenanceSpareRequest(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
-            if vals.get('name', NEW_REQUEST_NAME) in {NEW_REQUEST_NAME, _(NEW_REQUEST_NAME)}:
+            if vals.get('name', NEW_REQUEST_NAME) == NEW_REQUEST_NAME:
                 vals['name'] = self.env['ir.sequence'].next_by_code('maintenance.spare.request') or NEW_REQUEST_NAME
         records = super().create(vals_list)
         for rec in records:
@@ -403,7 +409,7 @@ class MaintenanceSpareRequestLine(models.Model):
                 raise UserError(_('Las cantidades no pueden ser negativas.'))
             if line.qty_approved > line.qty_requested:
                 raise UserError(_('La cantidad aprobada no puede superar la solicitada.'))
-            if line.qty_delivered > line.qty_approved and line.state != 'draft':
+            if line.qty_delivered > line.qty_approved:
                 raise UserError(_('La cantidad entregada no puede superar la aprobada.'))
 
     def _check_available_qty(self, qty, location):
@@ -411,7 +417,8 @@ class MaintenanceSpareRequestLine(models.Model):
         if qty <= 0:
             return
         available = self.env['stock.quant']._get_available_quantity(self.product_id, location, strict=True)
-        if available + QTY_TOLERANCE < qty:
+        precision_rounding = self.uom_id.rounding or self.product_id.uom_id.rounding
+        if float_compare(available, qty, precision_rounding=precision_rounding) < 0:
             raise UserError(
                 _(
                     'No hay stock suficiente para %s. Solicitado/aprobado: %.2f, disponible: %.2f.'

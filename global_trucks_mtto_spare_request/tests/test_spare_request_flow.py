@@ -50,3 +50,10 @@ class TestSpareRequestFlow(SavepointCase):
         request.action_deliver()
         self.assertEqual(request.state, 'delivered')
         self.assertEqual(request.line_ids[0].qty_delivered, 4.0)
+
+        picking = self.env['stock.picking'].search([('origin', '=', request.name)], limit=1)
+        self.assertTrue(picking, 'Debe crearse un movimiento de inventario para la entrega.')
+        self.assertEqual(picking.state, 'done')
+
+        available_qty = self.env['stock.quant']._get_available_quantity(self.product, self.location, strict=True)
+        self.assertEqual(available_qty, 6.0)
