@@ -1,19 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- Menú principal -->
     <menuitem id="menu_global_trucks_root"
               name="Global Trucks MC SAS"
               sequence="1"
               groups="group_mtto_admin,group_mtto_supervisor,group_mtto_maintenance,group_mtto_sales,group_mtto_director_operaciones,group_mtto_jefe_ventas,group_mtto_supervisor_taller,group_mtto_cliente_mantenimiento"/>
-
-    <!-- ========================================================= -->
-    <!-- MENÚ PARA CLIENTES -->
-    <!-- ========================================================= -->
-    <menuitem id="menu_cliente_solicitud"
-              name="Solicitar Mantenimiento"
-              parent="menu_global_trucks_root"
-              action="action_maintenance_solicitud_simple"
-              sequence="1"
-              groups="group_mtto_cliente_mantenimiento"/>
 
     <!-- ========================================================= -->
     <!-- MENÚ PARA STAFF (Director, Jefe Ventas, Supervisor) -->

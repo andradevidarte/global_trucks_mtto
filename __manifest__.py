@@ -35,6 +35,7 @@
         'wizard/maintenance_solicitud_assign_order_views.xml',
         'views/diagnosis_kanban_views.xml',
         'views/menu_views.xml',
+        'views/menu_cliente_solicitud.xml',
     
     ],
     'external_dependencies': {
