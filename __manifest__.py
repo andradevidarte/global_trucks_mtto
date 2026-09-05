@@ -36,6 +36,7 @@
         'views/diagnosis_kanban_views.xml',
         'views/menu_views.xml',
         'views/menu_cliente_solicitud.xml',
+        'views/menu_actions.xml',
     
     ],
     'external_dependencies': {
