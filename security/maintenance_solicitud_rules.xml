@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ========================================================= -->
+    <!-- RECORD RULES: maintenance.solicitud -->
+    <!-- ========================================================= -->
+    <!-- Cliente solo ve sus propias solicitudes -->
+    <record id="rule_mtto_solicitud_cliente_own" model="ir.rule">
+        <field name="name">Solicitudes: Cliente ve solo sus propias</field>
+        <field name="model_id" ref="model_maintenance_solicitud"/>
+        <field name="domain_force">[('client_id.user_ids','in',[user.id])]</field>
+        <field name="groups" eval="[(4, ref('group_mtto_cliente_mantenimiento'))]"/>
+        <field name="perm_read">True</field>
+        <field name="perm_write">False</field>
+        <field name="perm_create">True</field>
+        <field name="perm_unlink">False</field>
+    </record>
+
+    <!-- Director de Ops ve todas -->
+    <record id="rule_mtto_solicitud_director_all" model="ir.rule">
+        <field name="name">Solicitudes: Director ve todas</field>
+        <field name="model_id" ref="model_maintenance_solicitud"/>
+        <field name="domain_force">[(1,'=',1)]</field>
+        <field name="groups" eval="[(4, ref('group_mtto_director_operaciones'))]"/>
+        <field name="perm_read">True</field>
+        <field name="perm_write">True</field>
+        <field name="perm_create">False</field>
+        <field name="perm_unlink">False</field>
+    </record>
+
+    <!-- Jefe Ventas y Supervisor Taller ven asignadas -->
+    <record id="rule_mtto_solicitud_assigned_staff" model="ir.rule">
+        <field name="name">Solicitudes: Personal ve asignadas</field>
+        <field name="model_id" ref="model_maintenance_solicitud"/>
+        <field name="domain_force">[('assigned_to_ids','in',[user.id])]</field>
+        <field name="groups" eval="[(4, ref('group_mtto_jefe_ventas')), (4, ref('group_mtto_supervisor_taller'))]"/>
+        <field name="perm_read">True</field>
+        <field name="perm_write">True</field>
+        <field name="perm_create">False</field>
+        <field name="perm_unlink">False</field>
+    </record>
+</odoo>

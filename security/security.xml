@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- Categoría para agrupar los permisos del módulo -->
     <record id="module_category_global_trucks_mtto" model="ir.module.category">
