@@ -17,6 +17,8 @@
     'category': 'Services/Maintenance',
     'depends': ['base', 'web', 'mail', 'stock'],
     'data': [
+        'data/ir_model_data.xml',
+
         'security/security.xml',
         'security/ir.model.access.csv',
         "wizard/maintenance_order_new_wizard_views.xml",
@@ -31,6 +33,7 @@
         'wizard/maintenance_solicitud_assign_order_views.xml',
         'views/diagnosis_kanban_views.xml',
         'views/menu_views.xml',
+    
     ],
     'external_dependencies': {
         'python': [],
