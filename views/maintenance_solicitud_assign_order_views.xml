@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ========================================================= -->
+    <!-- VISTA DE FORMULARIO DEL WIZARD -->
+    <!-- ========================================================= -->
+    <record id="view_maintenance_solicitud_assign_order_form" model="ir.ui.view">
+        <field name="name">maintenance.solicitud.assign.order.form</field>
+        <field name="model">maintenance.solicitud.assign.order</field>
+        <field name="arch" type="xml">
+            <form string="Asignar Solicitud a Orden">
+                <group>
+                    <group>
+                        <field name="solicitud_id" readonly="1" />
+                        <field name="vehicle_id" readonly="1" />
+                    </group>
+                    <group>
+                        <field name="order_id" required="1" />
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_assign" string="Asignar" type="object" class="btn-primary" />
+                    <button string="Cancelar" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- ========================================================= -->
+    <!-- ACCIÓN DEL WIZARD -->
+    <!-- ========================================================= -->
+    <record id="action_maintenance_solicitud_assign_order" model="ir.actions.act_window">
+        <field name="name">Asignar a Orden</field>
+        <field name="res_model">maintenance.solicitud.assign.order</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

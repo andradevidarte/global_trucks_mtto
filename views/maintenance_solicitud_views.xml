@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ========================================================= -->
+    <!-- VISTA DE ÁRBOL (LISTA) -->
+    <!-- ========================================================= -->
+    <record id="view_maintenance_solicitud_tree" model="ir.ui.view">
+        <field name="name">maintenance.solicitud.tree</field>
+        <field name="model">maintenance.solicitud</field>
+        <field name="arch" type="xml">
+            <tree string="Solicitudes de Mantenimiento">
+                <field name="name" />
+                <field name="client_id" />
+                <field name="vehicle_id" />
+                <field name="state" decoration-success="state=='approved'" decoration-warning="state=='pending_approval'" decoration-danger="state=='rejected'" />
+                <field name="create_date" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- ========================================================= -->
+    <!-- VISTA DE FORMULARIO - COMPLETA (Director/Admin) -->
+    <!-- ========================================================= -->
+    <record id="view_maintenance_solicitud_form" model="ir.ui.view">
+        <field name="name">maintenance.solicitud.form</field>
+        <field name="model">maintenance.solicitud</field>
+        <field name="arch" type="xml">
+            <form string="Solicitud de Mantenimiento">
+                <header>
+                    <button name="action_submit" string="Enviar para Aprobación" type="object" class="oe_highlight" states="draft" />
+                    <button name="action_approve" string="Aprobar y Asignar" type="object" class="oe_highlight" states="pending_approval" />
+                    <button name="action_reject" string="Rechazar" type="object" states="pending_approval" />
+                    <button name="action_open_assign_wizard" string="Asignar a Orden Abierta" type="object" class="oe_highlight" states="assigned" />
+                    <button name="action_create_new_order" string="Crear Nueva Orden" type="object" class="oe_highlight" states="assigned" />
+                    <field name="state" widget="statusbar" statusbar_visible="draft,pending_approval,assigned,converted,rejected" />
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1" />
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="client_id" />
+                            <field name="vehicle_id" domain="[('owner_id', '=', client_id)]" />
+                            <field name="created_by_user" readonly="1" />
+                        </group>
+                        <group>
+                            <field name="create_date" readonly="1" />
+                            <field name="director_operaciones_id" readonly="1" />
+                        </group>
+                    </group>
+
+                    <separator string="Descripción del Problema" />
+                    <field name="description" />
+
+                    <separator string="Asignación" states="pending_approval,assigned,converted" />
+                    <field name="assigned_to_ids" widget="many2many_tags" states="pending_approval,assigned,converted" />
+
+                    <separator string="Motivo del Rechazo" states="rejected" />
+                    <field name="rejection_reason" readonly="1" states="rejected" />
+
+                    <separator string="Orden de Mantenimiento" states="converted" />
+                    <field name="order_id" readonly="1" states="converted" />
+                    <field name="diagnosis_id" readonly="1" states="converted" />
+                </sheet>
+
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" />
+                    <field name="activity_ids" widget="mail_activity" />
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- ========================================================= -->
+    <!-- VISTA DE FORMULARIO - SIMPLIFICADA (Cliente) -->
+    <!-- ========================================================= -->
+    <record id="view_maintenance_solicitud_form_simple" model="ir.ui.view">
+        <field name="name">maintenance.solicitud.form.simple</field>
+        <field name="model">maintenance.solicitud</field>
+        <field name="arch" type="xml">
+            <form string="Solicitar Mantenimiento">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>Solicitar Servicio de Mantenimiento</h1>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="vehicle_id" domain="[('owner_id.user_ids', 'in', [uid])]" required="1" />
+                        </group>
+                    </group>
+
+                    <separator string="Descripción del Problema" />
+                    <field name="description" required="1" placeholder="Describa el problema o servicio que requiere..." />
+
+                    <div class="alert alert-info">
+                        <p>Una vez enviada esta solicitud, será revisada por el equipo de operaciones y se le notificará del estado.</p>
+                    </div>
+                </sheet>
+
+                <footer>
+                    <button name="action_submit" string="Solicitar Mantenimiento" type="object" class="btn-primary" />
+                    <button string="Cancelar" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- ========================================================= -->
+    <!-- VISTA KANBAN -->
+    <!-- ========================================================= -->
+    <record id="view_maintenance_solicitud_kanban" model="ir.ui.view">
+        <field name="name">maintenance.solicitud.kanban</field>
+        <field name="model">maintenance.solicitud</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" quick_create="false">
+                <field name="id" />
+                <field name="name" />
+                <field name="client_id" />
+                <field name="vehicle_id" />
+                <field name="state" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card oe_kanban_global_click">
+                            <div class="oe_kanban_content">
+                                <strong>
+                                    <field name="name" />
+                                </strong>
+                                <br />
+                                <field name="client_id" />
+                                <br />
+                                <field name="vehicle_id" />
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- ========================================================= -->
+    <!-- ACCIÓN -->
+    <!-- ========================================================= -->
+    <record id="action_maintenance_solicitud" model="ir.actions.act_window">
+        <field name="name">Solicitudes de Mantenimiento</field>
+        <field name="res_model">maintenance.solicitud</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No hay solicitudes de mantenimiento.
+            </p>
+        </field>
+    </record>
+
+    <!-- Acción simplificada para clientes -->
+    <record id="action_maintenance_solicitud_simple" model="ir.actions.act_window">
+        <field name="name">Solicitar Mantenimiento</field>
+        <field name="res_model">maintenance.solicitud</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_maintenance_solicitud_form_simple" />
+        <field name="target">new</field>
+    </record>
+
+    <!-- ========================================================= -->
+    <!-- MENÚ -->
+    <!-- ========================================================= -->
+    <menuitem id="menu_maintenance_solicitud" name="Solicitudes" parent="menu_maintenance_root" action="action_maintenance_solicitud" sequence="1" />
+</odoo>

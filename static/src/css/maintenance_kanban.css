@@ -1,13 +1,8 @@
-/* ============================================
-   VISTA KANBAN MÓVIL - ÓRDENES DE MANTENIMIENTO
-   ============================================ */
-
-/* Contenedor principal del kanban */
+/* Vista Kanban de Órdenes de Mantenimiento */
 .o_maintenance_kanban.o_kanban_mobile {
     padding: 8px !important;
 }
 
-/* Tarjeta de orden */
 .o_maintenance_order_card {
     background: white;
     border-radius: 12px;
@@ -15,15 +10,8 @@
     margin-bottom: 12px;
     overflow: hidden;
     border-left: 4px solid #D4AF37;
-    transition: all 0.3s ease;
 }
 
-.o_maintenance_order_card:hover {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-    transform: translateY(-2px);
-}
-
-/* Header de la tarjeta */
 .o_kanban_card_header {
     padding: 12px 15px;
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
@@ -36,164 +24,12 @@
     color: #2c3e50;
 }
 
-/* Contenido de la tarjeta */
-.o_kanban_card_content {
-    padding: 12px 15px;
-}
-
-/* Información de la orden */
-.o_maintenance_order_info {
-    margin-bottom: 12px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #f0f0f0;
-}
-
-.o_maintenance_order_number {
-    display: block;
-    font-size: 13px;
-    color: #6c757d;
-    font-weight: 600;
-    margin-bottom: 4px;
-}
-
-.o_maintenance_order_date {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 12px;
-    color: #6c757d;
-}
-
-.o_maintenance_order_date i {
-    color: #D4AF37;
-}
-
-/* Información del vehículo */
-.o_maintenance_vehicle_info {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
 .o_vehicle_type {
-    font-size: 14px;
-    font-weight: 600;
-    color: #2c3e50;
-}
-
-.o_vehicle_type i {
-    color: #D4AF37;
-    margin-right: 6px;
-}
-
-.o_vehicle_plate {
     font-size: 13px;
-    color: #495057;
 }
 
-.o_vehicle_operator {
-    font-size: 12px;
-    color: #6c757d;
-}
-
-.o_vehicle_operator i {
-    color: #D4AF37;
-    margin-right: 6px;
-}
-
-/* Footer de la tarjeta */
-.o_kanban_card_footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 15px;
-    background: #f8f9fa;
-    border-top: 1px solid #dee2e6;
-}
-
-.o_kanban_card_footer_left {
-    display: flex;
-    gap: 8px;
-}
-
-.o_kanban_card_footer_right {
-    display: flex;
-    gap: 8px;
-}
-
-/* Badges de estado */
-.badge {
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.badge-success {
-    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-    color: white;
-}
-
-.badge-warning {
-    background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
-    color: #333;
-}
-
-.badge i {
-    font-size: 11px;
-}
-
-/* ============================================
-   RESPONSIVE - SOLO MÓVILES
-   ============================================ */
-
-/* Ocultar kanban en desktop, mostrar solo en móvil */
-@media (min-width: 768px) {
-    /* En desktop, usar vista de lista por defecto */
-    .o_maintenance_kanban.o_kanban_mobile .oe_kanban_card {
-        max-width: 400px;
-        margin: 0 auto 15px auto;
-    }
-}
-
-/* Optimización para móviles */
 @media (max-width: 767px) {
     .o_maintenance_kanban.o_kanban_mobile {
         padding: 5px !important;
     }
-    
-    .o_maintenance_order_card {
-        margin-bottom: 10px;
-    }
-    
-    .o_kanban_card_header_title {
-        font-size: 15px;
-    }
-    
-    .o_vehicle_type {
- 
-       font-size: 13px;
-    }
-}
-
-/* ============================================
-   ANIMACIONES
-   ============================================ */
-
-@keyframes slideInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.o_maintenance_order_card {
-    animation: slideInUp 0.3s ease;
 }

@@ -47,7 +47,7 @@
                             <field name="maintenance_order_ids"
                                    readonly="1"
                                    mode="list"
-                                   context="{'list_view_ref': 'global_trucks_mtto.view_maintenance_order_list_vehicle_history'}"/>
+                                   context="{'list_view_ref': 'view_maintenance_order_list_vehicle_history'}"/>
                         </page>
                     </notebook>
                 </sheet>

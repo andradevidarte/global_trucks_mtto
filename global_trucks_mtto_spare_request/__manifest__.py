@@ -8,7 +8,7 @@
     """,
     'author': 'Global Trucks MC SAS',
     'category': 'Services/Maintenance',
-    'depends': ['mail', 'stock', 'global_trucks_mtto'],
+    'depends': ['mail', 'stock', 'global_trucks_maintenance'],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',

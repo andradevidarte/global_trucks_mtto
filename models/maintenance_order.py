@@ -36,6 +36,19 @@ class MaintenanceOrder(models.Model):
     date_end = fields.Datetime(string='Fecha de Finalización', tracking=True)
 
     customer_id = fields.Many2one('res.partner', string='Cliente', required=True, tracking=True)
+    solicitud_id = fields.Many2one(
+        'maintenance.solicitud',
+        string='Solicitud de Origen',
+        ondelete='set null',
+        tracking=True
+    )
+
+    created_by_user = fields.Many2one(
+        'res.users',
+        string='Creado por Usuario',
+        tracking=True
+    )
+
     vehicle_id = fields.Many2one(
         'maintenance.vehicle',
         string='Vehículo',
@@ -534,6 +547,12 @@ class MaintenanceDiagnosis(models.Model):
     image_ids = fields.Many2many('ir.attachment', string='Imágenes Adjuntas', domain=[('mimetype', 'ilike', 'image')])
 
     is_completed = fields.Boolean(string='Está Completado', default=False)
+    created_from_solicitud = fields.Boolean(
+        string='Creado desde Solicitud',
+        default=False,
+        readonly=True
+    )
+
 
     followup_ids = fields.One2many('diagnosis.followup', 'diagnosis_id', string='Seguimientos')
 

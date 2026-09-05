@@ -51,19 +51,19 @@
                             attrs="{'invisible': [('state', 'not in', ('requested', 'rejected', 'cancelled'))]}"/>
                     <button name="action_submit" type="object" string="Solicitar a almacén"
                             class="btn-primary"
-                            groups="global_trucks_mtto_spare_request.group_spare_technician,global_trucks_mtto.group_mtto_admin,global_trucks_mtto.group_mtto_supervisor"
+                            groups="global_trucks_mtto_spare_request.group_spare_technician,group_mtto_admin,group_mtto_supervisor"
                             attrs="{'invisible': [('state', 'not in', ('draft', 'rejected'))]}"/>
                     <button name="action_approve" type="object" string="Aprobar"
                             class="btn-success"
-                            groups="global_trucks_mtto_spare_request.group_spare_storekeeper,global_trucks_mtto.group_mtto_admin,global_trucks_mtto.group_mtto_supervisor"
+                            groups="global_trucks_mtto_spare_request.group_spare_storekeeper,group_mtto_admin,group_mtto_supervisor"
                             attrs="{'invisible': [('state', 'not in', ('requested', 'approved', 'partially_delivered'))]}"/>
                     <button name="action_deliver" type="object" string="Registrar entrega"
                             class="btn-primary"
-                            groups="global_trucks_mtto_spare_request.group_spare_storekeeper,global_trucks_mtto.group_mtto_admin,global_trucks_mtto.group_mtto_supervisor"
+                            groups="global_trucks_mtto_spare_request.group_spare_storekeeper,group_mtto_admin,group_mtto_supervisor"
                             attrs="{'invisible': [('state', 'not in', ('approved', 'partially_delivered'))]}"/>
                     <button name="action_reject" type="object" string="Rechazar"
                             class="btn-danger"
-                            groups="global_trucks_mtto_spare_request.group_spare_storekeeper,global_trucks_mtto.group_mtto_admin,global_trucks_mtto.group_mtto_supervisor"
+                            groups="global_trucks_mtto_spare_request.group_spare_storekeeper,group_mtto_admin,group_mtto_supervisor"
                             attrs="{'invisible': [('state', 'not in', ('requested', 'approved', 'partially_delivered'))]}"/>
                     <button name="action_cancel" type="object" string="Cancelar"
                             class="btn-secondary"

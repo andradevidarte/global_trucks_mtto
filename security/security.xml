@@ -5,27 +5,54 @@
         <field name="sequence">35</field>
     </record>
 
-    <!-- Grupos -->
+    <!-- ========================================================= -->
+    <!-- GRUPOS EXISTENTES -->
+    <!-- ========================================================= -->
     <record id="group_mtto_admin" model="res.groups">
         <field name="name">Mantenimiento / Administración</field>
-        <field name="category_id" ref="global_trucks_mtto.module_category_global_trucks_mtto"/>
+        <field name="category_id" ref="module_category_global_trucks_mtto"/>
     </record>
 
-    <!-- IMPORTANTE: crear primero el grupo base -->
     <record id="group_mtto_maintenance" model="res.groups">
         <field name="name">Mantenimiento / Taller</field>
-        <field name="category_id" ref="global_trucks_mtto.module_category_global_trucks_mtto"/>
+        <field name="category_id" ref="module_category_global_trucks_mtto"/>
     </record>
 
     <record id="group_mtto_supervisor" model="res.groups">
         <field name="name">Mantenimiento / Supervisor</field>
-        <field name="category_id" ref="global_trucks_mtto.module_category_global_trucks_mtto"/>
-        <field name="implied_ids" eval="[(4, ref('global_trucks_mtto.group_mtto_maintenance'))]"/>
+        <field name="category_id" ref="module_category_global_trucks_mtto"/>
+        <field name="implied_ids" eval="[(4, ref('group_mtto_maintenance'))]"/>
     </record>
 
     <record id="group_mtto_sales" model="res.groups">
         <field name="name">Mantenimiento / Ventas</field>
-        <field name="category_id" ref="global_trucks_mtto.module_category_global_trucks_mtto"/>
+        <field name="category_id" ref="module_category_global_trucks_mtto"/>
+    </record>
+
+    <!-- ========================================================= -->
+    <!-- NUEVOS GRUPOS: Flujo de Solicitudes -->
+    <!-- ========================================================= -->
+    <record id="group_mtto_director_operaciones" model="res.groups">
+        <field name="name">Mantenimiento / Director de Operaciones</field>
+        <field name="category_id" ref="module_category_global_trucks_mtto"/>
+        <field name="implied_ids" eval="[(4, ref('group_mtto_admin'))]"/>
+    </record>
+
+    <record id="group_mtto_jefe_ventas" model="res.groups">
+        <field name="name">Mantenimiento / Jefe de Ventas</field>
+        <field name="category_id" ref="module_category_global_trucks_mtto"/>
+        <field name="implied_ids" eval="[(4, ref('group_mtto_sales'))]"/>
+    </record>
+
+    <record id="group_mtto_supervisor_taller" model="res.groups">
+        <field name="name">Mantenimiento / Supervisor de Taller</field>
+        <field name="category_id" ref="module_category_global_trucks_mtto"/>
+        <field name="implied_ids" eval="[(4, ref('group_mtto_supervisor'))]"/>
+    </record>
+
+    <record id="group_mtto_cliente_mantenimiento" model="res.groups">
+        <field name="name">Mantenimiento / Cliente</field>
+        <field name="category_id" ref="module_category_global_trucks_mtto"/>
     </record>
 
     <!-- ========================================================= -->
@@ -33,12 +60,12 @@
     <!-- ========================================================= -->
     <record id="group_mtto_only_vehicular" model="res.groups">
         <field name="name">Mantenimiento / Solo Vehicular</field>
-        <field name="category_id" ref="global_trucks_mtto.module_category_global_trucks_mtto"/>
+        <field name="category_id" ref="module_category_global_trucks_mtto"/>
     </record>
 
     <record id="group_mtto_only_machinery" model="res.groups">
         <field name="name">Mantenimiento / Solo Maquinaria</field>
-        <field name="category_id" ref="global_trucks_mtto.module_category_global_trucks_mtto"/>
+        <field name="category_id" ref="module_category_global_trucks_mtto"/>
     </record>
 
     <!-- ========================================================= -->
@@ -46,33 +73,71 @@
     <!-- ========================================================= -->
     <record id="rule_mtto_vehicle_only_vehicular" model="ir.rule">
         <field name="name">Vehículos: Solo Vehicular</field>
-        <field name="model_id" ref="global_trucks_mtto.model_maintenance_vehicle"/>
+        <field name="model_id" ref="model_maintenance_vehicle"/>
         <field name="domain_force">[('category','=','vehicular')]</field>
-        <field name="groups" eval="[(4, ref('global_trucks_mtto.group_mtto_only_vehicular'))]"/>
+        <field name="groups" eval="[(4, ref('group_mtto_only_vehicular'))]"/>
     </record>
 
     <record id="rule_mtto_vehicle_only_machinery" model="ir.rule">
         <field name="name">Vehículos: Solo Maquinaria</field>
-        <field name="model_id" ref="global_trucks_mtto.model_maintenance_vehicle"/>
+        <field name="model_id" ref="model_maintenance_vehicle"/>
         <field name="domain_force">[('category','=','machinery')]</field>
-        <field name="groups" eval="[(4, ref('global_trucks_mtto.group_mtto_only_machinery'))]"/>
+        <field name="groups" eval="[(4, ref('group_mtto_only_machinery'))]"/>
     </record>
 
     <!-- ========================================================= -->
     <!-- RECORD RULES: maintenance.order -->
-    <!-- Usa vehicle_id.category directamente (sin related) -->
     <!-- ========================================================= -->
     <record id="rule_mtto_order_only_vehicular" model="ir.rule">
         <field name="name">Órdenes: Solo Vehicular</field>
-        <field name="model_id" ref="global_trucks_mtto.model_maintenance_order"/>
+        <field name="model_id" ref="model_maintenance_order"/>
         <field name="domain_force">[('vehicle_id.category','=','vehicular')]</field>
-        <field name="groups" eval="[(4, ref('global_trucks_mtto.group_mtto_only_vehicular'))]"/>
+        <field name="groups" eval="[(4, ref('group_mtto_only_vehicular'))]"/>
     </record>
 
     <record id="rule_mtto_order_only_machinery" model="ir.rule">
         <field name="name">Órdenes: Solo Maquinaria</field>
-        <field name="model_id" ref="global_trucks_mtto.model_maintenance_order"/>
+        <field name="model_id" ref="model_maintenance_order"/>
         <field name="domain_force">[('vehicle_id.category','=','machinery')]</field>
-        <field name="groups" eval="[(4, ref('global_trucks_mtto.group_mtto_only_machinery'))]"/>
+        <field name="groups" eval="[(4, ref('group_mtto_only_machinery'))]"/>
+    </record>
+
+    <!-- ========================================================= -->
+    <!-- RECORD RULES: maintenance.solicitud -->
+    <!-- ========================================================= -->
+    <!-- Cliente solo ve sus propias solicitudes -->
+    <record id="rule_mtto_solicitud_cliente_own" model="ir.rule">
+        <field name="name">Solicitudes: Cliente ve solo sus propias</field>
+        <field name="model_id" ref="model_maintenance_solicitud"/>
+        <field name="domain_force">[('client_id.user_ids','in',[user.id])]</field>
+        <field name="groups" eval="[(4, ref('group_mtto_cliente_mantenimiento'))]"/>
+        <field name="perm_read">True</field>
+        <field name="perm_write">False</field>
+        <field name="perm_create">True</field>
+        <field name="perm_unlink">False</field>
+    </record>
+
+    <!-- Director de Ops ve todas -->
+    <record id="rule_mtto_solicitud_director_all" model="ir.rule">
+        <field name="name">Solicitudes: Director ve todas</field>
+        <field name="model_id" ref="model_maintenance_solicitud"/>
+        <field name="domain_force">[(1,'=',1)]</field>
+        <field name="groups" eval="[(4, ref('group_mtto_director_operaciones'))]"/>
+        <field name="perm_read">True</field>
+        <field name="perm_write">True</field>
+        <field name="perm_create">False</field>
+        <field name="perm_unlink">False</field>
+    </record>
+
+    <!-- Jefe Ventas y Supervisor Taller ven asignadas -->
+    <record id="rule_mtto_solicitud_assigned_staff" model="ir.rule">
+        <field name="name">Solicitudes: Personal ve asignadas</field>
+        <field name="model_id" ref="model_maintenance_solicitud"/>
+        <field name="domain_force">[('assigned_to_ids','in',[user.id])]</field>
+        <field name="groups" eval="[(4, ref('group_mtto_jefe_ventas')), (4, ref('group_mtto_supervisor_taller'))]"/>
+        <field name="perm_read">True</field>
+        <field name="perm_write">True</field>
+        <field name="perm_create">False</field>
+        <field name="perm_unlink">False</field>
     </record>
 </odoo>

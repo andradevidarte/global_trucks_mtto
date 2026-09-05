@@ -6,6 +6,7 @@
         Módulo para gestionar órdenes de mantenimiento de vehículos.
         - Registro de vehículos
         - Órdenes de mantenimiento
+        - Solicitudes de mantenimiento de clientes
         - Diagnósticos de fallas
         - Seguimientos de trabajo
         - Imágenes adjuntas
@@ -14,32 +15,33 @@
     """,
     'author': 'Global Trucks MC SAS',
     'category': 'Services/Maintenance',
-    'depends': ['base', 'web', 'mail'],
+    'depends': ['base', 'web', 'mail', 'stock'],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
-	"wizard/maintenance_order_new_wizard_views.xml",
+        "wizard/maintenance_order_new_wizard_views.xml",
         'data/ir_sequence_data.xml',
         'reports/paperformat.xml',
         'reports/maintenance_order_report.xml',
         'reports/maintenance_order_report_template.xml',
+        'reports/maintenance_order_report_ldn_template.xml',
         'views/vehicle_views.xml',
         'views/maintenance_order_views.xml',
-        'reports/maintenance_order_report_ldn_template.xml',
+        'views/maintenance_solicitud_views.xml',
+        'wizard/maintenance_solicitud_assign_order_views.xml',
         'views/diagnosis_kanban_views.xml',
         'views/menu_views.xml',
     ],
+    'external_dependencies': {
+        'python': [],
+    },
     'assets': {
         'web.assets_backend': [
-            'global_trucks_mtto/static/src/css/custom_kanban_styles.css',
-            'global_trucks_mtto/static/src/css/floating_save_button.css',
-            'global_trucks_mtto/static/src/css/signature_enhanced.css',
-            'global_trucks_mtto/static/src/css/image_gallery.css',
-            'global_trucks_mtto/static/src/css/maintenance_kanban.css',
-            'global_trucks_mtto/static/src/js/floating_save_button.js',
-            'global_trucks_mtto/static/src/js/signature_canvas_fix.js',
-            'global_trucks_mtto/static/src/js/image_compressor.js',
-            'global_trucks_mtto/static/src/js/parts_autosave_buttons.js',
+            'global_trucks_maintenance/static/src/css/custom_kanban_styles.css',
+            'global_trucks_maintenance/static/src/css/floating_save_button.css',
+            'global_trucks_maintenance/static/src/css/signature_enhanced.css',
+            'global_trucks_maintenance/static/src/css/image_gallery.css',
+            'global_trucks_maintenance/static/src/css/maintenance_kanban.css',
         ],
     },
     'installable': True,

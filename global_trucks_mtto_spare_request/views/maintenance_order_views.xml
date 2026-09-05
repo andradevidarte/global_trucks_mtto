@@ -2,7 +2,7 @@
     <record id="view_maintenance_order_form_spare_request_inherit" model="ir.ui.view">
         <field name="name">maintenance.order.form.spare.request.inherit</field>
         <field name="model">maintenance.order</field>
-        <field name="inherit_id" ref="global_trucks_mtto.view_maintenance_order_form"/>
+        <field name="inherit_id" ref="view_maintenance_order_form"/>
         <field name="arch" type="xml">
             <xpath expr="//sheet" position="inside">
                 <div class="oe_button_box" name="button_box">

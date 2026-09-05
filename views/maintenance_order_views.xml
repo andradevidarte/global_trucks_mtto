@@ -125,7 +125,7 @@
         <field name="arch" type="xml">
             <list string="Órdenes de Mantenimiento" create="1" edit="1" delete="1">
                 <header>
-                    <button name="%(global_trucks_mtto.action_mtto_order_new_wizard)d"
+                    <button name="%(action_mtto_order_new_wizard)d"
                             type="action"
                             string="Nueva orden"
                             class="btn btn-primary"/>
@@ -369,13 +369,13 @@
                                     <button name="action_request" type="object" string="Solicitar"
                                             class="btn btn-secondary"
                                             data-autosave="1"
-                                            groups="global_trucks_mtto.group_mtto_admin,global_trucks_mtto.group_mtto_supervisor,global_trucks_mtto.group_mtto_maintenance"
+                                            groups="group_mtto_admin,group_mtto_supervisor,group_mtto_maintenance"
                                             attrs="{'invisible': [('state', '!=', 'draft')]}"/>
 
                                     <button name="action_deliver" type="object" string="Entregar"
                                             class="btn btn-primary"
                                             data-autosave="1"
-                                            groups="global_trucks_mtto.group_mtto_admin,global_trucks_mtto.group_mtto_supervisor,global_trucks_mtto.group_mtto_sales"
+                                            groups="group_mtto_admin,group_mtto_supervisor,group_mtto_sales"
                                             attrs="{'invisible': [('state', '=', 'delivered')]}"/>
                                 </list>
                             </field>

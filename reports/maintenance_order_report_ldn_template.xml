@@ -298,7 +298,7 @@
     <!-- Reporte LDN -->
     <template id="report_maintenance_order_ldn">
         <t t-call="web.html_container">
-            <t t-call="global_trucks_mtto.report_maintenance_order_ldn_document"/>
+            <t t-call="report_maintenance_order_ldn_document"/>
         </t>
     </template>
 </odoo>

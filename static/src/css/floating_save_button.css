@@ -17,83 +17,22 @@
     justify-content: center;
     font-size: 24px;
     transition: all 0.3s ease;
-    animation: pulse 2s infinite;
 }
 
 .o_form_view .o_form_button_save_floating:hover {
     transform: scale(1.1);
     box-shadow: 0 6px 16px rgba(212, 175, 55, 0.6);
-    background: linear-gradient(135deg, #B8941F 0%, #D4AF37 100%);
-}
-
-.o_form_view .o_form_button_save_floating:active {
-    transform: scale(0.95);
 }
 
 .o_form_view.o_form_dirty .o_form_button_save_floating {
     display: flex;
 }
 
-/* Animación de pulso */
-@keyframes pulse {
-    0% {
-        box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
-    }
-    50% {
-        box-shadow: 0 4px 20px rgba(212, 175, 55, 0.7);
-    }
-    100% {
-        box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
-    }
-}
-
-/* Icono dentro del botón */
-.o_form_button_save_floating i {
-    pointer-events: none;
-}
-
-/* Tooltip */
-.o_form_button_save_floating::before {
-    content: 'Guardar';
-    position: absolute;
-    right: 70px;
-    background-color: #333;
-    color: white;
-    padding: 8px 12px;
-    border-radius: 4px;
-    font-size: 13px;
-    white-space: nowrap;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-}
-
-.o_form_button_save_floating:hover::before {
-    opacity: 1;
-}
-
-/* Responsive - Dispositivos móviles */
 @media (max-width: 768px) {
     .o_form_view .o_form_button_save_floating {
         width: 56px;
         height: 56px;
         bottom: 15px;
         right: 15px;
-        font-size: 22px;
     }
-}
-
-@media (max-width: 480px) {
-    .o_form_view .o_form_button_save_floating {
-        width: 50px;
-        height: 50px;
-        bottom: 12px;
-        right: 12px;
-        font-size: 20px;
-    }
-}
-
-/* Ocultar el botón cuando hay modales abiertos */
-.modal-open .o_form_button_save_floating {
-    display: none !important;
 }

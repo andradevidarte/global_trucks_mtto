@@ -3,15 +3,42 @@
     <menuitem id="menu_global_trucks_root"
               name="Global Trucks MC SAS"
               sequence="1"
-              groups="global_trucks_mtto.group_mtto_admin,global_trucks_mtto.group_mtto_supervisor,global_trucks_mtto.group_mtto_maintenance,global_trucks_mtto.group_mtto_sales"/>
+              groups="group_mtto_admin,group_mtto_supervisor,group_mtto_maintenance,group_mtto_sales,group_mtto_director_operaciones,group_mtto_jefe_ventas,group_mtto_supervisor_taller,group_mtto_cliente_mantenimiento"/>
+
+    <!-- ========================================================= -->
+    <!-- MENÚ PARA CLIENTES -->
+    <!-- ========================================================= -->
+    <menuitem id="menu_cliente_solicitud"
+              name="Solicitar Mantenimiento"
+              parent="menu_global_trucks_root"
+              action="action_maintenance_solicitud_simple"
+              sequence="1"
+              groups="group_mtto_cliente_mantenimiento"/>
+
+    <!-- ========================================================= -->
+    <!-- MENÚ PARA STAFF (Director, Jefe Ventas, Supervisor) -->
+    <!-- ========================================================= -->
+    <menuitem id="menu_maintenance_root"
+              name="Mantenimiento"
+              parent="menu_global_trucks_root"
+              sequence="10"
+              groups="group_mtto_admin,group_mtto_supervisor,group_mtto_maintenance,group_mtto_sales,group_mtto_director_operaciones,group_mtto_jefe_ventas,group_mtto_supervisor_taller"/>
+
+    <!-- Submenú: Solicitudes de Mantenimiento -->
+    <menuitem id="menu_maintenance_solicitud"
+              name="Solicitudes"
+              parent="menu_maintenance_root"
+              action="action_maintenance_solicitud"
+              sequence="1"
+              groups="group_mtto_director_operaciones,group_mtto_jefe_ventas,group_mtto_supervisor_taller"/>
 
     <!-- Submenú: Órdenes de Mantenimiento -->
     <menuitem id="menu_maintenance_orders"
               name="Órdenes de Mantenimiento"
-              parent="menu_global_trucks_root"
+              parent="menu_maintenance_root"
               action="action_maintenance_order"
               sequence="10"
-              groups="global_trucks_mtto.group_mtto_admin,global_trucks_mtto.group_mtto_supervisor,global_trucks_mtto.group_mtto_maintenance,global_trucks_mtto.group_mtto_sales"/>
+              groups="group_mtto_admin,group_mtto_supervisor,group_mtto_maintenance,group_mtto_sales,group_mtto_director_operaciones,group_mtto_jefe_ventas,group_mtto_supervisor_taller"/>
 
     <!-- NUEVO: Submenú "Nueva orden" (abre el wizard de selección de vehículo) -->
     <menuitem id="menu_maintenance_order_new"
@@ -19,14 +46,14 @@
               parent="menu_maintenance_orders"
               action="action_mtto_order_new_wizard"
               sequence="5"
-              groups="global_trucks_mtto.group_mtto_admin,global_trucks_mtto.group_mtto_supervisor,global_trucks_mtto.group_mtto_maintenance,global_trucks_mtto.group_mtto_sales"/>
+              groups="group_mtto_admin,group_mtto_supervisor,group_mtto_maintenance,group_mtto_sales,group_mtto_director_operaciones,group_mtto_jefe_ventas,group_mtto_supervisor_taller"/>
 
     <!-- Menú de Configuración -->
     <menuitem id="menu_configuration"
               name="Configuración"
               parent="menu_global_trucks_root"
               sequence="100"
-              groups="global_trucks_mtto.group_mtto_admin,global_trucks_mtto.group_mtto_supervisor"/>
+              groups="group_mtto_admin,group_mtto_supervisor,group_mtto_director_operaciones"/>
 
     <!-- Submenú: Vehículos -->
     <menuitem id="menu_vehicles"
@@ -34,5 +61,5 @@
               parent="menu_configuration"
               action="action_maintenance_vehicle"
               sequence="10"
-              groups="global_trucks_mtto.group_mtto_admin,global_trucks_mtto.group_mtto_supervisor"/>
+              groups="group_mtto_admin,group_mtto_supervisor,group_mtto_director_operaciones"/>
 </odoo>
