@@ -22,6 +22,7 @@
         'security/security.xml',
         'security/maintenance_solicitud_rules.xml',
         'security/ir.model.access.csv',
+        'security/ir_model_access_solicitud.csv',
         "wizard/maintenance_order_new_wizard_views.xml",
         'data/ir_sequence_data.xml',
         'reports/paperformat.xml',
